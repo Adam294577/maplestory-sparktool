@@ -198,7 +198,18 @@
         {"idx":3, "show":["boss","exp"], "act":false, "url" : "./img/skill/虎影/sk3.png" , "used":["boss_burst"], "name":"必死決心(二階)", "type":"Active_per_findamage","val":36}
     ]},
     {"idx":50 ,"key":"劍豪" ,"skill":[
-        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/天使破壞者/sk0.png" , "used":["boss_common","boss_burst","exp"], "name":"專用咒語", "type":"Per_atk","val":4}
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk0.png" , "used":["boss_common","boss_burst","exp"], "name":"英雄的回響", "type":"Per_atk","val":4},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk1.png" , "used":["boss_common","boss_burst","exp"], "name":"嘯月流基本技(8層)", "type":"Per_damage","val":16},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk2.png" , "used":["boss_common","boss_burst","exp"], "name":"瞬殺斬", "type":"Per_damage","val":20},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk3.png" , "used":["boss_common","boss_burst","exp"], "name":"嘯月五影劍(5層)", "type":"Active_per_findamage","val":115},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk4.png" , "used":["boss_common","boss_burst","exp"], "name":"紋櫻公主的祝福(最大增幅)", "type":"Active_per_findamage","val":50},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk5.png" , "used":["boss_common","boss_burst","exp"], "name":"公主的加護", "type":"Per_damage","val":10},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk6.png" , "used":["boss_common","boss_burst","exp"], "name":"集結曉之陣(22無)", "type":"Per_ignore","val":22},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk7.png" , "used":["boss_common","boss_burst","exp"], "name":"集結曉之陣(17爆傷)", "type":"Per_critical","val":17},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk8.png" , "used":["boss_common","boss_burst","exp"], "name":"集結曉之陣(35攻)", "type":"Unique_atk","val":35},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk9.png" , "used":["boss_common","boss_burst","exp"], "name":"終焉之須佐能乎", "type":"Active_per_findamage","val":10},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk10.png" , "used":["boss_common","boss_burst","exp"], "name":"幻靈武具", "type":"Mult","val":0},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk11.png" , "used":["boss_common","boss_burst","exp"], "name":"鋼鐵之軀", "type":"Mult","val":0}
     ]},
     {"idx":51 ,"key":"陰陽師","skill":[
         {"idx":0,"name":"英雄回響", "type":"Per_atk","val":4}
