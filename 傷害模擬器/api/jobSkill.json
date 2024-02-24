@@ -33,7 +33,14 @@
         {"idx":0,"name":"英雄回響", "type":"Per_atk","val":4}
     ]},
     {"idx":11 ,"key":"開拓者","skill":[
-        {"idx":0,"name":"英雄回響", "type":"Per_atk","val":4}
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/開拓者/sk0.png" , "used":["boss_common","boss_burst","exp"], "name":"英雄的回響", "type":"Per_atk","val":4},
+        {"idx":1, "show":["boss","exp"], "act":false, "url" : "./img/skill/開拓者/sk1.png" , "used":["boss_common","boss_burst","exp"], "name":"傳說冒險家", "type":"Per_damage","val":10},
+        {"idx":2, "show":["boss","exp"], "act":false, "url" : "./img/skill/開拓者/sk2.png" , "used":["boss_common","boss_burst","exp"], "name":"詛咒轉移(五層)", "type":"Per_critical","val":20},
+        {"idx":3, "show":["boss","exp"], "act":false, "url" : "./img/skill/開拓者/sk3.png" , "used":["boss_common","boss_burst"], "name":"古代指揮", "type":"Active_per_findamage","val":8},
+        {"idx":3, "show":["boss","exp"], "act":false, "url" : "./img/skill/夜使者/sk3.png" , "used":["boss_burst"], "name":"冒險大楓祝", "type":"Mult","val":0},
+        {"idx":6, "show":["boss","exp"], "act":false, "url" : "./img/skill/開拓者/sk6.png" , "used":["boss_burst"], "name":"爆擊強化", "type":"Mult","val":0},
+        {"idx":6, "show":["boss","exp"], "act":false, "url" : "./img/skill/開拓者/sk6.png" , "used":["boss_burst"], "name":"忘卻遺跡(Lv12)", "type":"Active_per_findamage","val":9}
+
     ]},
     {"idx":12 ,"key":"夜使者","skill":[
         {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/夜使者/sk0.png" , "used":["boss_common","boss_burst","exp"], "name":"英雄回響", "type":"Per_atk","val":4},
