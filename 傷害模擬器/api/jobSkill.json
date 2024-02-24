@@ -69,7 +69,9 @@
         {"idx":0,"name":"英雄回響", "type":"Per_atk","val":4}
     ]},
     {"idx":21 ,"key":"烈焰巫師","skill":[
-        {"idx":0,"name":"英雄回響", "type":"Per_atk","val":4}
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/烈焰巫師/sk0.png" , "used":["boss_common","boss_burst","exp"], "name":"英雄的回響", "type":"Per_atk","val":4},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/烈焰巫師/sk3.png" , "used":["boss_common","boss_burst","exp"], "name":"超載魔力", "type":"Active_per_findamage","val":8},
+        {"idx":5, "show":["boss","exp"], "act":false, "url" : "./img/skill/烈焰巫師/sk5.png" , "used":["boss_burst"], "name":"超越者西格諾斯的祝福", "type":"Mult","val":0}
     ]},
     {"idx":22 ,"key":"破風使者","skill":[
         {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/破風使者/sk0.png" , "used":["boss_common","boss_burst","exp"], "name":"英雄的回響", "type":"Per_atk","val":4},
@@ -165,7 +167,11 @@
         {"idx":0,"name":"英雄回響", "type":"Per_atk","val":4}
     ]},
     {"idx":45 ,"key":"凱殷","skill":[
-        {"idx":0,"name":"英雄回響", "type":"Per_atk","val":4}
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/凱殷/sk0.png" , "used":["boss_common","boss_burst","exp"], "name":"專用咒語", "type":"Per_atk","val":4},
+        {"idx":6, "show":["boss","exp"], "act":false, "url" : "./img/skill/凱殷/sk1.png" , "used":["boss_burst"], "name":"爆擊強化", "type":"Mult","val":0},
+        {"idx":6, "show":["boss","exp"], "act":false, "url" : "./img/skill/凱殷/sk2.png" , "used":["boss_burst"], "name":"死亡降臨", "type":"Mult","val":45},
+        {"idx":6, "show":["boss","exp"], "act":false, "url" : "./img/skill/凱殷/sk3.png" , "used":["boss_burst"], "name":"化身", "type":"Mult","val":0},
+        {"idx":6, "show":["boss","exp"], "act":false, "url" : "./img/skill/凱殷/sk4.png" , "used":["boss_burst"], "name":"格蘭蒂斯女神的祝福", "type":"Per_damage","val":35}
     ]},
     {"idx":46 ,"key":"卡蒂娜","skill":[
         {"idx":0,"name":"英雄回響", "type":"Per_atk","val":4},
@@ -200,7 +206,7 @@
     {"idx":50 ,"key":"劍豪" ,"skill":[
         {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk0.png" , "used":["boss_common","boss_burst","exp"], "name":"英雄的回響", "type":"Per_atk","val":4},
         {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk1.png" , "used":["boss_common","boss_burst","exp"], "name":"嘯月流基本技(8層)", "type":"Per_damage","val":16},
-        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk2.png" , "used":["boss_common","boss_burst","exp"], "name":"瞬殺斬", "type":"Per_damage","val":20},
+        {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk2.png" , "used":["boss_common","boss_burst","exp"], "name":"瞬殺斬", "type":"Per_damage","val":21},
         {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk3.png" , "used":["boss_common","boss_burst","exp"], "name":"嘯月五影劍(5層)", "type":"Active_per_findamage","val":115},
         {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk4.png" , "used":["boss_common","boss_burst","exp"], "name":"紋櫻公主的祝福(最大增幅)", "type":"Active_per_findamage","val":50},
         {"idx":0, "show":["boss","exp"], "act":false, "url" : "./img/skill/劍豪/sk5.png" , "used":["boss_common","boss_burst","exp"], "name":"公主的加護", "type":"Per_damage","val":10},
