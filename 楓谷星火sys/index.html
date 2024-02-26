@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>新楓之谷-覺醒星火</title>
+    <script src="./js/tailwind.js"></script>
+    <style>
+      body {
+        background: #222;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h1 class="text-2xl text-white text-center font-bold mt-2">星火模擬器</h1>
+      <div class="flex justify-center gap-x-2 mt-4">
+        <select class="md:w-[150px] w-[120px] text-xs py-1">
+          <option value="請選擇裝備類型">請選擇裝備類型</option>
+          <option value="創世武器">創世武器</option>
+          <option value="一般裝備">一般裝備(頂培)</option>
+          <option value="一般裝備">一般裝備(滅龍)</option>
+          <option value="Boss裝備">Boss裝備(漆黑飾品)</option>
+          <option value="Boss裝備">Boss裝備(防具)</option>
+        </select>
+
+        <select class="md:w-[150px] w-[120px] text-xs">
+          <option value="請選擇星火類型">請選擇星火類型</option>
+          <option value="150級星火">150級星火</option>
+          <option value="強力的輪迴星火">強力的輪迴星火</option>
+          <option value="永遠的輪迴星火">永遠的輪迴星火</option>
+          <option value="覺醒的輪迴星火">覺醒的輪迴星火</option>
+        </select>
+      </div>
+      <div class="w-[200px] mx-auto mt-4">
+        <span class="text-white mr-2">職業:</span>
+        <select class="w-[120px] text-xs py-1">
+          <option value="劍士">劍士</option>
+          <option value="法師">法師</option>
+          <option value="弓箭手">弓箭手</option>
+          <option value="盜賊">盜賊</option>
+          <option value="海盜">海盜</option>
+        </select>
+      </div>
+
+      <div class="w-[200px] mx-auto mt-4">
+        <span class="text-white mr-2">目標 :</span>
+        <select class="text-xs py-1">
+          <option value="3排T3">6B+T3攻+T3有用</option>
+          <option value="3排T3">3排T3</option>
+          <option value="4排T3">4排T3</option>
+        </select>
+      </div>
+
+      <nav class="fixed md:w-[75px] w-[50px] h-full top-0 left-0 bg-[#999]">
+        <span class="fixed top-0 left-[55px] md:left-[80px] text-white"
+          >圖點兩下<br />切換裝備</span
+        >
+        <ul>
+          <li>
+            <img src="" alt="裝備圖" />
+            <span>名稱</span>
+          </li>
+        </ul>
+      </nav>
+      <div
+        class="border-2 mt-4 min-h-[400px] mx-auto p-4 w-[50%] max-w-[500px] relative rounded-md"
+      >
+        <div
+          class="box w-[90%] max-w-[250px] mx-auto border-2 border-red-600 h-[300px]"
+        ></div>
+        <div class="flex justify-around absolute left-0 bottom-2 w-full">
+          <button
+            class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
+          >
+            點一次
+          </button>
+          <button
+            class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
+          >
+            點到有
+          </button>
+          <!-- <button class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold">繼續點</button>
+             <button class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold">重新開始</button> -->
+        </div>
+      </div>
+      <div
+        class="text-2xl text-white max-w-[500px] w-[90%] pl-12 mx-auto font-bold mt-4 flex items-center"
+      >
+        <span>結果: </span>
+        <!-- <span class="text-base ml-4">洗了 ? 科 XX星火 出貨了!!</span> -->
+        <span class="text-base ml-4">洗了207科 覺醒星火 水溝了 T_T</span>
+      </div>
+      <footer
+        class="flex fixed bottom-0 w-full justify-between text-white bg-black px-4"
+      >
+        <span>網頁製作: 池雲寅</span>
+        <span>參考資訊:官網星火機率</span>
+      </footer>
+    </div>
+    <script src="./js/vue.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html>
