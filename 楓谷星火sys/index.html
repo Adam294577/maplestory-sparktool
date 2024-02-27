@@ -10,95 +10,170 @@
       body {
         background: #222;
       }
+      .navList {
+        --sb-track-color: #999999;
+        --sb-thumb-color: #ffffff;
+        --sb-size: 4px;
+      }
+
+      .navList::-webkit-scrollbar {
+        width: var(--sb-size);
+      }
+
+      .navList::-webkit-scrollbar-track {
+        background: var(--sb-track-color);
+        border-radius: 5px;
+      }
+
+      .navList::-webkit-scrollbar-thumb {
+        background: var(--sb-thumb-color);
+        border-radius: 5px;
+      }
+
+      @supports not selector(::-webkit-scrollbar) {
+        .navList {
+          scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+        }
+      }
     </style>
   </head>
   <body>
     <div id="app">
       <h1 class="text-2xl text-white text-center font-bold mt-2">星火模擬器</h1>
-      <div class="flex justify-center gap-x-2 mt-4">
-        <select class="md:w-[150px] w-[120px] text-xs py-1">
-          <option value="請選擇裝備類型">請選擇裝備類型</option>
-          <option value="創世武器">創世武器</option>
-          <option value="一般裝備">一般裝備(頂培)</option>
-          <option value="一般裝備">一般裝備(滅龍)</option>
-          <option value="Boss裝備">Boss裝備(漆黑飾品)</option>
-          <option value="Boss裝備">Boss裝備(防具)</option>
-        </select>
-
-        <select class="md:w-[150px] w-[120px] text-xs">
-          <option value="請選擇星火類型">請選擇星火類型</option>
-          <option value="150級星火">150級星火</option>
-          <option value="強力的輪迴星火">強力的輪迴星火</option>
-          <option value="永遠的輪迴星火">永遠的輪迴星火</option>
-          <option value="覺醒的輪迴星火">覺醒的輪迴星火</option>
-        </select>
-      </div>
-      <div class="w-[200px] mx-auto mt-4">
-        <span class="text-white mr-2">職業:</span>
-        <select class="w-[120px] text-xs py-1">
-          <option value="劍士">劍士</option>
-          <option value="法師">法師</option>
-          <option value="弓箭手">弓箭手</option>
-          <option value="盜賊">盜賊</option>
-          <option value="海盜">海盜</option>
-        </select>
-      </div>
-
-      <div class="w-[200px] mx-auto mt-4">
-        <span class="text-white mr-2">目標 :</span>
-        <select class="text-xs py-1">
-          <option value="3排T3">6B+T3攻+T3有用</option>
-          <option value="3排T3">3排T3</option>
-          <option value="4排T3">4排T3</option>
-        </select>
-      </div>
-
       <nav class="fixed md:w-[75px] w-[50px] h-full top-0 left-0 bg-[#999]">
-        <span class="fixed top-0 left-[55px] md:left-[80px] text-white"
+        <span class="fixed top-0 left-[55px] md:left-[80px] text-white text-sm"
           >圖點兩下<br />切換裝備</span
         >
-        <ul>
-          <li>
+        <ul
+          class="navList flex flex-col gap-y-4 h-[97%] overflow-hidden overflow-y-scroll pb-4"
+        >
+          <li class="hidden">
             <img src="" alt="裝備圖" />
             <span>名稱</span>
           </li>
         </ul>
       </nav>
-      <div
-        class="border-2 mt-4 min-h-[400px] mx-auto p-4 w-[50%] max-w-[500px] relative rounded-md"
-      >
-        <div
-          class="box w-[90%] max-w-[250px] mx-auto border-2 border-red-600 h-[300px]"
-        ></div>
-        <div class="flex justify-around absolute left-0 bottom-2 w-full">
-          <button
-            class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
-          >
-            點一次
-          </button>
-          <button
-            class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
-          >
-            點到有
-          </button>
-          <!-- <button class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold">繼續點</button>
-             <button class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold">重新開始</button> -->
+
+      <div class="flex ml-[55px] md:ml-[80px] flex-wrap absolute">
+        <!-- 選單區塊 -->
+        <div class="flex md:flex-col flex-wrap mt-8 gap-y-2">
+          <label class="w-[50%]">
+            <span class="text-white mr-2">裝備 :</span>
+            <select
+              class="text-xs py-1 w-[120px]"
+              v-model="EquipType.is"
+              @change="handEquipType(null,EquipType.is)"
+            >
+              <option value="請選擇裝備類型">請選擇裝備類型</option>
+              <option value="創世">創世武器</option>
+              <option value="頂培">一般裝備(頂培)</option>
+              <option value="滅龍">一般裝備(滅龍)</option>
+              <option value="漆黑">Boss裝備(漆黑飾品)</option>
+              <option value="防具">Boss裝備(防具)</option>
+            </select>
+          </label>
+          <label class="w-[50%]">
+            <span class="text-white mr-2">星火 :</span>
+            <select
+              class="text-xs py-1 w-[120px]"
+              v-model="SparkType.is"
+              @change="handSparkType(null,SparkType.is)"
+            >
+              <option v-for="list in SparkTypeData" :value="list">
+                {{list}}
+              </option>
+            </select>
+          </label>
+
+          <label class="w-[50%]">
+            <span class="text-white mr-2">職業 :</span>
+            <select class="text-xs py-1 w-[120px]" v-model="JobType.is">
+              <option
+                v-for="list in JobTypeData"
+                :value="list"
+                @change="handJobType(null,JobType.is)"
+              >
+                {{list}}
+              </option>
+            </select>
+          </label>
+          <label class="w-[50%] relative">
+            <span class="text-white mr-2">目標 :</span>
+            <select class="text-xs py-1 w-[120px]" v-model="AimType.is">
+              <option v-for="list in AimTypeData" :value="list">
+                {{list}}
+              </option>
+            </select>
+            <span
+              class="text-white absolute top-[calc(100%+5px)] left-0 w-[150px]"
+              v-show="EquipType.is === '創世'"
+              >hint:<span class="ml-4 text-sm text-[#FF0]"
+                >{{"T3攻 = 123"}}</span
+              ></span
+            >
+          </label>
         </div>
       </div>
-      <div
-        class="text-2xl text-white max-w-[500px] w-[90%] pl-12 mx-auto font-bold mt-4 flex items-center"
-      >
-        <span>結果: </span>
-        <!-- <span class="text-base ml-4">洗了 ? 科 XX星火 出貨了!!</span> -->
-        <span class="text-base ml-4">洗了207科 覺醒星火 水溝了 T_T</span>
+      <div class="mt-[8rem] md:mt-[1rem] ml-20">
+        <!-- 運行區塊 -->
+        <div
+          class="mt-4 min-h-[400px] mx-auto p-4 w-[40%] max-w-[800px] min-w-[270px] relative -left-7 rounded-md bg-[#ffcc99] origin-top md:scale-125 scale-100"
+        >
+          <div class="relative">
+            <img
+              class="mx-auto relative -top-3 z-0"
+              :src="UseSparkFrame"
+              alt=""
+            />
+            <div
+              class="w-[35px] h-[35px] border-2 border-red-600 absolute z-10 -translate-x-1/2 left-1/2 top-[94px]"
+            ></div>
+          </div>
+
+          <div class="flex justify-around absolute left-0 bottom-4 w-full">
+            <button
+              class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
+            >
+              點一次
+            </button>
+            <button
+              class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
+            >
+              點到有
+            </button>
+            <!-- <button class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold">繼續點</button>
+               <button class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold">重新開始</button> -->
+          </div>
+        </div>
+        <div
+          class="text-2xl text-white max-w-[800px] w-[90%] md:pl-12 mx-auto font-bold md:mt-[8rem] mt-4 flex items-center"
+        >
+          <span>結果: </span>
+          <!-- <span class="text-base ml-4">洗了 ? 科 XX星火 出貨了!!</span> -->
+          <span class="text-base ml-4">洗了207科 覺醒星火 水溝了 T_T</span>
+        </div>
       </div>
+
       <footer
-        class="flex fixed bottom-0 w-full justify-between text-white bg-black px-4"
+        class="flex fixed bottom-0 w-full justify-between text-white bg-black px-8"
       >
         <span>網頁製作: 池雲寅</span>
-        <span>參考資訊:官網星火機率</span>
+        <span
+          >參考資訊:<a
+            class="text-[#FF0] ml-2"
+            href="https://tw-event.beanfun.com/MapleStory/eventad/EventAD.aspx?EventADID=8389"
+            target="_blank"
+            >官網星火機率</a
+          >、<a
+            class="text-[#FF0] ml-2"
+            href="https://forum.gamer.com.tw/Co.php?bsn=7650&sn=6203980"
+            target="_blank"
+            >裝備數值</a
+          ></span
+        >
       </footer>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <script src="./js/vue.js"></script>
     <script src="./js/main.js"></script>
   </body>
