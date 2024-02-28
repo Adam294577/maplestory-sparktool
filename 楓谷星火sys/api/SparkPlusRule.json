@@ -1,0 +1,60 @@
+{
+  "data": [
+    {
+      "type": "Weapon",
+      "key": "200",
+      "plusRule": {
+        "oneAttr": 11,
+        "twoAttr": 6,
+        "defence": 9,
+        "pp": 600,
+        "boss": 2,
+        "dmg": 1
+      }
+    },
+    {
+      "type": "Equip",
+      "key": "150",
+      "plusRule": {
+        "oneAttr": 8,
+        "twoAttr": 4,
+        "atk": 1,
+        "defence": 8,
+        "pp": 420
+      }
+    },
+    {
+      "type": "Equip",
+      "key": "160~170",
+      "plusRule": {
+        "oneAttr": 9,
+        "twoAttr": 5,
+        "atk": 1,
+        "defence": 9,
+        "pp": 480
+      }
+    },
+    {
+      "type": "Equip",
+      "key": "200",
+      "plusRule": {
+        "oneAttr": 11,
+        "twoAttr": 6,
+        "atk": 1,
+        "defence": 9,
+        "pp": 600
+      }
+    },
+    {
+      "type": "Equip",
+      "key": "250",
+      "plusRule": {
+        "oneAttr": 12,
+        "twoAttr": 7,
+        "atk": 1,
+        "defence": 9,
+        "pp": 600
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@
     <style>
       body {
         background: #222;
+        font-family: "Microsoft JhengHei";
       }
       .navList {
         --sb-track-color: #999999;
@@ -42,7 +43,7 @@
       <h1 class="text-2xl text-white text-center font-bold mt-2">星火模擬器</h1>
       <nav class="fixed md:w-[75px] w-[50px] h-full top-0 left-0 bg-[#999]">
         <span
-          v-if="EquipImgRender.length !== 0"
+          v-if="!SparkSysBool"
           class="fixed top-4 left-[75px] md:left-[80px] text-[#FF0] text-sm"
           >圖點兩下可切換裝備</span
         >
@@ -75,6 +76,7 @@
               class="text-xs py-1 w-[120px]"
               v-model="EquipType.is"
               @change="handEquipType(null,EquipType.is)"
+              :disabled="SparkSysBool"
             >
               <option value="請選擇裝備類型">請選擇裝備類型</option>
               <option value="創世">創世武器</option>
@@ -90,6 +92,7 @@
               class="text-xs py-1 w-[120px]"
               v-model="SparkType.is"
               @change="handSparkType(null,SparkType.is)"
+              :disabled="SparkSysBool"
             >
               <option v-for="list in SparkTypeData" :value="list">
                 {{list}}
@@ -99,20 +102,24 @@
 
           <label class="w-[50%]">
             <span class="text-white mr-2">職業 :</span>
-            <select class="text-xs py-1 w-[120px]" v-model="JobType.is">
-              <option
-                v-for="list in JobTypeData"
-                :key="list"
-                :value="list"
-                @change="handJobType(null,list)"
-              >
+            <select
+              class="text-xs py-1 w-[120px]"
+              :disabled="SparkSysBool"
+              v-model="JobType.is"
+              @change="handJobType(null,JobType.is)"
+            >
+              <option v-for="list in JobTypeData" :key="list" :value="list">
                 {{list}}
               </option>
             </select>
           </label>
           <label class="w-[50%] relative">
             <span class="text-white mr-2">目標 :</span>
-            <select class="text-xs py-1 w-[120px]" v-model="AimType.is">
+            <select
+              class="text-xs py-1 w-[120px]"
+              :disabled="SparkSysBool"
+              v-model="AimType.is"
+            >
               <option v-for="list in AimTypeData" :value="list">
                 {{list}}
               </option>
@@ -121,13 +128,49 @@
               class="text-white absolute top-[calc(100%+5px)] left-0 w-[150px]"
               v-show="EquipType.is === '創世'"
               >hint:<span class="ml-4 text-sm text-[#FF0]"
-                >{{"T3攻 = 123"}}</span
+                >{{"T3攻 = 123攻"}}</span
               ></span
             >
           </label>
+          <label class="w-full min-w-[150px] relative mt-6">
+            <span class="text-white mr-2 block">等值換算 :</span>
+            <div class="flex items-center py-1">
+              <span class="text-white inline-block w-[45px]">1B</span>
+              <span class="text-white pr-4">=</span>
+              <input
+                class="text-xs p-1 mr-2 w-[50px]"
+                type="text"
+                max="5"
+                value=""
+              />
+              <span class="text-white">攻</span>
+            </div>
+            <div class="flex items-center py-1">
+              <span class="text-white inline-block w-[45px]">1攻</span>
+              <span class="text-white pr-4">=</span>
+              <input
+                class="text-xs p-1 mr-2 w-[50px]"
+                type="text"
+                max="5"
+                value=""
+              />
+              <span class="text-white">主屬</span>
+            </div>
+            <div class="flex items-center py-1">
+              <span class="text-white inline-block w-[45px]">1副屬</span>
+              <span class="text-white pr-4">=</span>
+              <input
+                class="text-xs p-1 mr-2 w-[50px]"
+                type="text"
+                max="5"
+                value=""
+              />
+              <span class="text-white">主屬</span>
+            </div>
+          </label>
         </div>
       </div>
-      <div class="mt-[8rem] md:mt-[1rem] ml-20">
+      <div class="mt-[14rem] md:mt-[2rem] ml-20">
         <!-- 運行區塊 -->
         <div
           class="mt-4 min-h-[400px] mx-auto p-4 w-[40%] max-w-[800px] min-w-[270px] relative -left-7 rounded-md bg-[#ffcc99] origin-top md:scale-125 scale-100"
@@ -147,10 +190,23 @@
                 :alt="UseImgItem.is.alt"
               />
             </div>
+            <ul
+              class="absolute top-[168px] left-[calc(50%+3px)] -translate-x-1/2 w-[170px]"
+            >
+              <li
+                v-for="list in SparkResultRender"
+                :key="list.title"
+                class="text-white text-xs flex items-center"
+              >
+                <span>{{list.title}}</span><span class="mx-2">:</span>
+                <span>{{list.val}}</span>
+              </li>
+            </ul>
           </div>
 
           <div class="flex justify-around absolute left-0 bottom-4 w-full">
             <button
+              @click="DiceSparkOnce"
               class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
             >
               點一次
@@ -169,7 +225,7 @@
         >
           <span>結果: </span>
           <!-- <span class="text-base ml-4">洗了 ? 科 XX星火 出貨了!!</span> -->
-          <span class="text-base ml-4">洗了207科 覺醒星火 水溝了 T_T</span>
+          <span class="text-base ml-4">洗了77科 覺醒星火 洗到了 ^_^</span>
         </div>
       </div>
 

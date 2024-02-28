@@ -1,48 +1,52 @@
-{"data":[
-    {"key":"Weapon",
-        "List":[
-            {"idx":0,"key":"STR"},
-            {"idx":1,"key":"DEX"},
-            {"idx":2,"key":"INT"},
-            {"idx":3,"key":"LUK"},
-            {"idx":4,"key":"STRDEX"},
-            {"idx":5,"key":"STRINT"},
-            {"idx":6,"key":"STRLUK"},
-            {"idx":7,"key":"DEXINT"},
-            {"idx":8,"key":"DEXLUK"},
-            {"idx":9,"key":"INTLUK"},
-            {"idx":10,"key":"最大HP"},
-            {"idx":11,"key":"最大MP"},
-            {"idx":12,"key":"穿戴等級減少"},
-            {"idx":13,"key":"防禦力"},
-            {"idx":14,"key":"攻擊力"},
-            {"idx":15,"key":"魔力"},
-            {"idx":16,"key":"BOSS"},
-            {"idx":17,"key":"傷害"},
-            {"idx":18,"key":"全屬"}
-        ]
+{
+  "data": [
+    {
+      "key": "Weapon",
+      "List": [
+        { "idx": 0, "key": "STR" },
+        { "idx": 1, "key": "DEX" },
+        { "idx": 2, "key": "INT" },
+        { "idx": 3, "key": "LUK" },
+        { "idx": 4, "key": "STRDEX" },
+        { "idx": 5, "key": "STRINT" },
+        { "idx": 6, "key": "STRLUK" },
+        { "idx": 7, "key": "DEXINT" },
+        { "idx": 8, "key": "DEXLUK" },
+        { "idx": 9, "key": "INTLUK" },
+        { "idx": 10, "key": "最大HP" },
+        { "idx": 11, "key": "最大MP" },
+        { "idx": 12, "key": "穿戴等級減少" },
+        { "idx": 13, "key": "防禦力" },
+        { "idx": 14, "key": "攻擊力" },
+        { "idx": 15, "key": "魔力" },
+        { "idx": 16, "key": "BOSS" },
+        { "idx": 17, "key": "傷害" },
+        { "idx": 18, "key": "全屬" }
+      ]
     },
-    {"key":"Equip",
-        "List":[
-            {"idx":0,"key":"STR"},
-            {"idx":1,"key":"DEX"},
-            {"idx":2,"key":"INT"},
-            {"idx":3,"key":"LUK"},
-            {"idx":4,"key":"STRDEX"},
-            {"idx":5,"key":"STRINT"},
-            {"idx":6,"key":"STRLUK"},
-            {"idx":7,"key":"DEXINT"},
-            {"idx":8,"key":"DEXLUK"},
-            {"idx":9,"key":"INTLUK"},
-            {"idx":10,"key":"最大HP"},
-            {"idx":11,"key":"最大MP"},
-            {"idx":12,"key":"穿戴等級減少"},
-            {"idx":13,"key":"防禦力"},
-            {"idx":14,"key":"攻擊力"},
-            {"idx":15,"key":"魔力"},
-            {"idx":16,"key":"BOSS"},
-            {"idx":17,"key":"傷害"},
-            {"idx":18,"key":"全屬"}
-        ]
+    {
+      "key": "Equip",
+      "List": [
+        { "idx": 0, "key": "STR" },
+        { "idx": 1, "key": "DEX" },
+        { "idx": 2, "key": "INT" },
+        { "idx": 3, "key": "LUK" },
+        { "idx": 4, "key": "STRDEX" },
+        { "idx": 5, "key": "STRINT" },
+        { "idx": 6, "key": "STRLUK" },
+        { "idx": 7, "key": "DEXINT" },
+        { "idx": 8, "key": "DEXLUK" },
+        { "idx": 9, "key": "INTLUK" },
+        { "idx": 10, "key": "最大HP" },
+        { "idx": 11, "key": "最大MP" },
+        { "idx": 12, "key": "穿戴等級減少" },
+        { "idx": 13, "key": "防禦力" },
+        { "idx": 14, "key": "攻擊力" },
+        { "idx": 15, "key": "魔力" },
+        { "idx": 16, "key": "移動速度" },
+        { "idx": 17, "key": "跳躍力" },
+        { "idx": 18, "key": "全屬" }
+      ]
     }
-]}
+  ]
+}
