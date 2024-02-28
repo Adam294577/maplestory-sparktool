@@ -1,18 +1,6 @@
 {
   "data": [
     {
-      "type": "Weapon",
-      "key": "200",
-      "plusRule": {
-        "oneAttr": 11,
-        "twoAttr": 6,
-        "defence": 9,
-        "pp": 600,
-        "boss": 2,
-        "dmg": 1
-      }
-    },
-    {
       "type": "Equip",
       "key": "150",
       "plusRule": {

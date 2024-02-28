@@ -32,10 +32,11 @@ window.onload = () => {
         let Usedata = EquipTypeData.data ?? [];
         let SingleFilter = ["請選擇裝備類型", "創世", "頂培", "滅龍"];
         if (Usedata.length === 0) return [];
-        // 特殊狀況: 當是神之子創世的時候
-        // if (UseImgItem.value.is.alt === "琉璃") {
-
-        // }
+        // 特殊狀況: 當選擇神之子創世的時候
+        if (UseImgItem.value.is.alt === "琉璃") {
+          handAimType(null, AimType.value.is, "4B+T3攻");
+          return ["3總+T3攻", "4B+T3攻", "6B+T3攻", "T4攻以上"];
+        }
         let dataFilter = Usedata.filter((item) => {
           if (EquipType.value.is === item.key) {
             return item;
@@ -82,7 +83,14 @@ window.onload = () => {
         },
       });
       const DefaultJobChangeData = reactive({ data: [] });
-      const weaponType = ref({ is: 6 });
+      const weaponType = ref({
+        is: {
+          idx: 5,
+          weapon: ["單手劍", "單手斧", "單手棍", "手杖", "弩", "太刀"],
+          atk: [20, 40, 59, 87, 119, 157, 201],
+        },
+      });
+      const WeaponTypeHint = ref({ key: "T3", val: "123攻" });
       const UseSparkFrame = computed(() => {
         let key = SparkType.value.is;
         // console.log(key);
@@ -133,6 +141,31 @@ window.onload = () => {
         if (SparkSysBool.value) return;
         if (key !== undefined) {
           AimType.value.is = key;
+          // 創世武器切換目標時 ， 更新提示詞
+          if (EquipType.value.is === "創世") {
+            handWeaponType();
+            if (key === "6B+T3攻" || key === "6B+T3攻+T3有用") {
+              WeaponTypeHint.value.key = "T3";
+              WeaponTypeHint.value.val = weaponType.value.is.atk[2];
+            }
+            if (key === "6B+T4攻以上" || key === "T4攻以上") {
+              WeaponTypeHint.value.key = "T4";
+              WeaponTypeHint.value.val = weaponType.value.is.atk[3];
+            }
+            if (key === "T5攻以上") {
+              WeaponTypeHint.value.key = "T5";
+              WeaponTypeHint.value.val = weaponType.value.is.atk[4];
+            }
+            if (key === "T6攻以上") {
+              WeaponTypeHint.value.key = "T6";
+              WeaponTypeHint.value.val = weaponType.value.is.atk[5];
+              5;
+            }
+            if (key === "T7攻") {
+              WeaponTypeHint.value.key = "T7";
+              WeaponTypeHint.value.val = weaponType.value.is.atk[6];
+            }
+          }
         } else {
           AimType.value.is = defaultKey;
         }
@@ -175,6 +208,15 @@ window.onload = () => {
                     ? handAimType(null, "51+3%主屬以上")
                     : handAimType(null, "42+3%主屬以上");
                 }
+                if (item.type === "創世") {
+                  if (item.alt === "琉璃") {
+                    handAimType(null, "4B+T3攻");
+                    SparkType.value.is = "永遠的輪迴星火";
+                  } else {
+                    handAimType(null, "6B+T3攻");
+                    SparkType.value.is = "覺醒的輪迴星火";
+                  }
+                }
               }
             });
           }, 100);
@@ -183,6 +225,19 @@ window.onload = () => {
           UseImgItem.value.is = defaultkey;
         }
       };
+      const handWeaponType = () => {
+        weaponTypeData.data.forEach((item) => {
+          if (item.weapon.includes(UseImgItem.value.is.alt))
+            weaponType.value.is = item;
+        });
+        console.log(weaponType.value.is);
+      };
+      // 等值換算
+      const AllSTATtoATK = ref(5.3);
+      const BOSStoATK = ref(5.5);
+      const AllSTATtoMAINSTAT = ref(9.5);
+      const SUBtoMAINSTAT = ref(0.07);
+      const ATKtoMAINSTAT = ref(2);
 
       // 星火運作流程
       const SparkLvRate = reactive({ data: [] });
@@ -231,7 +286,7 @@ window.onload = () => {
           return [];
         }
         let result = [];
-        const IsGeneralEquip = ["頂培", "滅龍", "琉璃"];
+        const IsGeneralEquip = ["頂耳", "頂腰", "頂鍊", "滅龍", "琉璃"];
         const SparkRateArr = SparkLvRate.data.filter((item) => {
           if (item.key === SparkType.value.is) return item;
         });
@@ -276,13 +331,77 @@ window.onload = () => {
       }
       const SparkResult = ref({ is: [] });
       const SparkSysBool = ref(false);
+      const SparkGoal = ref({ key: "stat", is: 0 });
+      const SparkCount = ref(0);
+      const handSparkGoal = () => {
+        if (EquipType.value.is === "創世") {
+          SparkGoal.value.key = "atk";
+          if (AimType.value.is === "3總+T3攻") {
+            SparkGoal.value.is = 3 * BOSStoATK.value + WeaponTypeHint.value.val;
+          }
+          if (AimType.value.is === "4B+T3攻") {
+            SparkGoal.value.is = 4 * BOSStoATK.value + WeaponTypeHint.value.val;
+          }
+          if (
+            AimType.value.is === "6B+T3攻" ||
+            AimType.value.is === "6B+T4攻"
+          ) {
+            SparkGoal.value.is = 6 * BOSStoATK.value + WeaponTypeHint.value.val;
+          }
+          if (AimType.value.is === "6B+T3攻+T3有用") {
+            // 假設T3有用為 T3主屬(+33)作為目標
+            SparkGoal.value.is =
+              33 * (1 / ATKtoMAINSTAT.value) +
+              6 * BOSStoATK.value +
+              WeaponTypeHint.value.val;
+          }
+          if (
+            AimType.value.is === "T4攻以上" ||
+            AimType.value.is === "T5攻以上" ||
+            AimType.value.is === "T6攻以上" ||
+            AimType.value.is === "T7攻"
+          ) {
+            SparkGoal.value.is = WeaponTypeHint.value.val;
+          }
+        } else {
+          if (AimType.value.is === "32主屬以上") SparkGoal.value.is = 32;
+          if (AimType.value.is === "37主屬以上") SparkGoal.value.is = 37;
+          if (AimType.value.is === "40主屬以上") SparkGoal.value.is = 40;
+          if (AimType.value.is === "42主屬以上") SparkGoal.value.is = 42;
+          if (AimType.value.is === "47主屬以上") SparkGoal.value.is = 47;
+          if (AimType.value.is === "48主屬以上") SparkGoal.value.is = 48;
+          if (AimType.value.is === "51主屬以上") SparkGoal.value.is = 51;
+          if (AimType.value.is === "69主屬以上") SparkGoal.value.is = 69;
+          if (AimType.value.is === "57主屬以上") SparkGoal.value.is = 57;
+          if (AimType.value.is === "78主屬以上") SparkGoal.value.is = 78;
+          if (AimType.value.is === "42+3%主屬以上")
+            SparkGoal.value.is = 42 + AllSTATtoMAINSTAT.value * 3;
+          if (AimType.value.is === "51+3%主屬以上")
+            SparkGoal.value.is = 51 + AllSTATtoMAINSTAT.value * 3;
+          if (AimType.value.is === "57+3%主屬以上")
+            SparkGoal.value.is = 57 + AllSTATtoMAINSTAT.value * 3;
+          if (AimType.value.is === "69+3%主屬以上")
+            SparkGoal.value.is = 69 + AllSTATtoMAINSTAT.value * 3;
+          if (AimType.value.is === "78+3%主屬以上")
+            SparkGoal.value.is = 78 + AllSTATtoMAINSTAT.value * 3;
+          if (JobType.value.is === "劍士") SparkGoal.value.key = "STR";
+          if (JobType.value.is === "法師") SparkGoal.value.key = "INT";
+          if (JobType.value.is === "弓箭手") SparkGoal.value.key = "DEX";
+          if (JobType.value.is === "盜賊") SparkGoal.value.key = "LUK";
+          if (JobType.value.is === "海盜力") SparkGoal.value.key = "STR";
+          if (JobType.value.is === "海盜敏") SparkGoal.value.key = "DEX";
+        }
+        console.log("最後制定目標:", SparkGoal.value);
+      };
       const DiceSparkOnce = () => {
         if (SparkSysBool.value) return console.log("執行中 不可再點");
         SparkSysBool.value = true;
+        handSparkGoal();
+
         // 預設為Boss裝備 選取4排星火潛能
         let CreateDice = 4;
 
-        const IsGeneralEquip = ["頂培", "滅龍", "琉璃"];
+        const IsGeneralEquip = ["頂耳", "頂腰", "頂鍊", "滅龍", "琉璃"];
         if (IsGeneralEquip.includes(UseImgItem.value.is.alt)) {
           CreateDice = handCreateDice();
           // console.log(CreateDice);
@@ -376,6 +495,10 @@ window.onload = () => {
             attrdata[1].val += item.Lv * twoAttr;
             attrdata[3].val += item.Lv * twoAttr;
           }
+          if (item.Attr === "INTLUK") {
+            attrdata[2].val += item.Lv * twoAttr;
+            attrdata[3].val += item.Lv * twoAttr;
+          }
           if (item.Attr === "穿戴等級減少") attrdata[4].val += item.Lv * 5;
           if (item.Attr === "最大HP") attrdata[5].val += item.Lv * pp;
           if (item.Attr === "最大MP") attrdata[6].val += item.Lv * pp;
@@ -383,14 +506,14 @@ window.onload = () => {
           if (item.Attr === "攻擊力" && EquipType.value.is !== "創世")
             attrdata[12].val += item.Lv * 1;
           if (item.Attr === "魔力" && EquipType.value.is !== "創世")
-            attrdata[12].val += item.Lv * 1;
+            attrdata[13].val += item.Lv * 1;
           if (item.Attr === "攻擊力" && EquipType.value.is === "創世") {
-            console.log("創世攻擊表格");
-            return;
+            handWeaponType();
+            attrdata[12].val = weaponType.value.is.atk[item.Lv - 1];
           }
           if (item.Attr === "魔力" && EquipType.value.is === "創世") {
-            console.log("創世攻擊表格");
-            return;
+            handWeaponType();
+            attrdata[13].val = weaponType.value.is.atk[item.Lv - 1];
           }
           if (item.Attr === "移動速度") attrdata[8].val += item.Lv * 1;
           if (item.Attr === "跳躍力") attrdata[9].val += item.Lv * 1;
@@ -405,7 +528,11 @@ window.onload = () => {
           if (item.val !== 0) {
             msgTitle = item.title;
             msgVal = `+${item.val}`;
-            if (item.title === "全屬性") {
+            if (
+              item.title === "全屬性" ||
+              item.title === "總傷害" ||
+              item.title === "BOSS攻擊傷害"
+            ) {
               msgVal = `+${item.val}%`;
             }
             if (item.title === "套用等級減少") {
@@ -414,7 +541,7 @@ window.onload = () => {
             SparkResultRender.value.push({ title: msgTitle, val: msgVal });
           }
         });
-        // console.log("顯示結果", SparkResultRender.value);
+        console.log("顯示結果", SparkResultRender.value);
         if (true) {
           console.log("目標達成");
           SparkSysBool.value = false;
@@ -463,10 +590,18 @@ window.onload = () => {
         handEquipType,
         handSparkType,
         handJobType,
+        // 目標提示詞
+        WeaponTypeHint,
         // 裝備圖
         UseImgItem,
         EquipImgRender,
         handImgItem,
+        // 等值換算
+        AllSTATtoATK,
+        BOSStoATK,
+        AllSTATtoMAINSTAT,
+        SUBtoMAINSTAT,
+        ATKtoMAINSTAT,
         // 星火運算
         UseSparkFrame,
         DiceSparkOnce,

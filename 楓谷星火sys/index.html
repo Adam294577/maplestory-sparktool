@@ -128,49 +128,80 @@
               class="text-white absolute top-[calc(100%+5px)] left-0 w-[150px]"
               v-show="EquipType.is === '創世'"
               >hint:<span class="ml-4 text-sm text-[#FF0]"
-                >{{"T3攻 = 123攻"}}</span
+                >{{WeaponTypeHint.key}}攻 = {{WeaponTypeHint.val}}攻</span
               ></span
             >
           </label>
           <label class="w-full min-w-[150px] relative mt-6">
             <span class="text-white mr-2 block">等值換算 :</span>
-            <div class="flex items-center py-1">
-              <span class="text-white inline-block w-[45px]">1B</span>
-              <span class="text-white pr-4">=</span>
-              <input
-                class="text-xs p-1 mr-2 w-[50px]"
-                type="text"
-                max="5"
-                value=""
-              />
-              <span class="text-white">攻</span>
+            <div v-show="EquipType.is ==='創世'">
+              <div class="flex items-center py-1">
+                <span class="text-white inline-block w-[45px]">1全屬</span>
+                <span class="text-white pr-4">=</span>
+                <input
+                  v-model.number="AllSTATtoATK"
+                  class="text-xs p-1 mr-2 w-[50px]"
+                  type="text"
+                  max="5"
+                  :disabled="SparkSysBool"
+                />
+                <span class="text-white">攻</span>
+              </div>
+              <div class="flex items-center py-1">
+                <span class="text-white inline-block w-[45px]">1B</span>
+                <span class="text-white pr-4">=</span>
+                <input
+                  class="text-xs p-1 mr-2 w-[50px]"
+                  type="text"
+                  max="5"
+                  v-model.number="BOSStoATK"
+                  :disabled="SparkSysBool"
+                />
+                <span class="text-white">攻</span>
+              </div>
             </div>
-            <div class="flex items-center py-1">
-              <span class="text-white inline-block w-[45px]">1攻</span>
-              <span class="text-white pr-4">=</span>
-              <input
-                class="text-xs p-1 mr-2 w-[50px]"
-                type="text"
-                max="5"
-                value=""
-              />
-              <span class="text-white">主屬</span>
-            </div>
-            <div class="flex items-center py-1">
-              <span class="text-white inline-block w-[45px]">1副屬</span>
-              <span class="text-white pr-4">=</span>
-              <input
-                class="text-xs p-1 mr-2 w-[50px]"
-                type="text"
-                max="5"
-                value=""
-              />
-              <span class="text-white">主屬</span>
+            <div v-show="EquipType.is !=='創世'">
+              <div class="flex items-center py-1">
+                <span class="text-white inline-block w-[45px]">1全屬</span>
+                <span class="text-white pr-4">=</span>
+                <input
+                  class="text-xs p-1 mr-2 w-[50px]"
+                  type="text"
+                  max="5"
+                  v-model.number="AllSTATtoMAINSTAT"
+                  :disabled="SparkSysBool"
+                />
+                <span class="text-white">主屬</span>
+              </div>
+              <div class="flex items-center py-1">
+                <span class="text-white inline-block w-[45px]">1攻</span>
+                <span class="text-white pr-4">=</span>
+                <input
+                  class="text-xs p-1 mr-2 w-[50px]"
+                  type="text"
+                  max="5"
+                  v-model.number="ATKtoMAINSTAT"
+                  :disabled="SparkSysBool"
+                />
+                <span class="text-white">主屬</span>
+              </div>
+              <div class="flex items-center py-1">
+                <span class="text-white inline-block w-[45px]">1副屬</span>
+                <span class="text-white pr-4">=</span>
+                <input
+                  class="text-xs p-1 mr-2 w-[50px]"
+                  type="text"
+                  max="5"
+                  v-model.number="SUBtoMAINSTAT"
+                  :disabled="SparkSysBool"
+                />
+                <span class="text-white">主屬</span>
+              </div>
             </div>
           </label>
         </div>
       </div>
-      <div class="mt-[14rem] md:mt-[2rem] ml-20">
+      <div class="mt-[16rem] md:mt-[2rem] ml-20">
         <!-- 運行區塊 -->
         <div
           class="mt-4 min-h-[400px] mx-auto p-4 w-[40%] max-w-[800px] min-w-[270px] relative -left-7 rounded-md bg-[#ffcc99] origin-top md:scale-125 scale-100"
