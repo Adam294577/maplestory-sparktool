@@ -41,8 +41,10 @@
     <div id="app">
       <h1 class="text-2xl text-white text-center font-bold mt-2">星火模擬器</h1>
       <nav class="fixed md:w-[75px] w-[50px] h-full top-0 left-0 bg-[#999]">
-        <span class="fixed top-0 left-[55px] md:left-[80px] text-white text-sm"
-          >圖點兩下<br />切換裝備</span
+        <span
+          v-if="EquipImgRender.length !== 0"
+          class="fixed top-4 left-[75px] md:left-[80px] text-[#FF0] text-sm"
+          >圖點兩下可切換裝備</span
         >
         <ul
           class="navList flex flex-col gap-y-4 h-[97%] overflow-hidden overflow-y-scroll py-4"
@@ -63,7 +65,7 @@
         </ul>
       </nav>
 
-      <div class="flex ml-[55px] md:ml-[80px] flex-wrap absolute">
+      <div class="flex ml-[55px] md:ml-[100px] flex-wrap absolute">
         <!-- 選單區塊 -->
         <div class="flex md:flex-col flex-wrap mt-8 gap-y-2">
           <label class="w-[50%]">
@@ -135,7 +137,7 @@
               alt=""
             />
             <div
-              class="w-[35px] h-[35px] border-2 border-red-600 absolute z-10 -translate-x-1/2 left-1/2 top-[94px]"
+              class="w-[35px] h-[35px] absolute z-10 -translate-x-1/2 left-1/2 top-[94px] bg-[#FFF]"
             ></div>
           </div>
 
