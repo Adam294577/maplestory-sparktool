@@ -32,6 +32,12 @@ window.onload = () => {
         let Usedata = EquipTypeData.data ?? [];
         let SingleFilter = ["請選擇裝備類型", "創世", "頂培", "滅龍"];
         if (Usedata.length === 0) return [];
+        // 特殊狀況: 當是神之子創世的時候
+        // if (UseImgItem.value.is.alt === "琉璃") {
+        //   SparkType.value.is = "強力的輪迴星火";
+        //   AimType.value.is = "T3攻4B";
+        //   return ["T3攻4B", "T3攻6B", "T4攻以上"];
+        // }
         let dataFilter = Usedata.filter((item) => {
           if (EquipType.value.is === item.key) {
             return item;
@@ -43,12 +49,22 @@ window.onload = () => {
           return dataFilter[0].aimArr;
         } else {
           // 二次篩選目標內容
+          // console.log("二次篩選使用的裝備圖", UseImgItem.value.is);
+          let altKey = "";
+          if (UseImgItem.value.is.type === "防具") {
+            altKey = UseImgItem.value.is.alt.substr(0, 2);
+          }
+          if (UseImgItem.value.is.type === "漆黑") {
+            altKey = UseImgItem.value.is.alt;
+          }
+          // console.log(altKey);
           let result = dataFilter[0].aimArr.filter((item) => {
-            if (item.key === UseImgItem.value.is) {
+            if (item.key === altKey) {
               return item;
             }
           });
           handAimType(null, AimType.value.is, result[0].default);
+
           return result[0].aim;
         }
       });
@@ -56,7 +72,7 @@ window.onload = () => {
       const SparkType = ref({ is: "請選擇星火類型" });
       const JobType = ref({ is: "-" });
       const AimType = ref({ is: "-" });
-      const UseImgItem = ref({ is: "-" });
+      const UseImgItem = ref({ is: {} });
       const weaponType = ref({ is: 6 });
       const UseSparkFrame = computed(() => {
         let key = SparkType.value.is;
@@ -68,10 +84,9 @@ window.onload = () => {
         EquipTypeData.data.forEach((item) => {
           if (item.key === key) {
             EquipType.value.is = item.key;
-            SparkType.value.is = item.spark;
-            SparkType.value.is = item.spark;
-            JobType.value.is = item.job;
-            AimType.value.is = item.aim;
+            handSparkType(null, item.spark);
+            handJobType(null, item.job);
+            handAimType(null, item.aim);
             UseImgItem.value.is = item.Img;
           }
         });
@@ -98,6 +113,24 @@ window.onload = () => {
         }
       };
       // 切換圖片 &更新資料
+      const EquipImgData = reactive({ data: [] });
+      const EquipImgRender = computed(() => {
+        let data = EquipImgData.data ?? [];
+        if (data.length === 0) return [];
+        if (EquipType.value.is === "請選擇裝備類型") return [];
+        let MapEquipdata = Object.groupBy(data, ({ type }) => type);
+        handJobType(null, JobType.value.is, "劍士");
+        let MapJobData = MapEquipdata[EquipType.value.is].filter((item) => {
+          if (item.job.includes(JobType.value.is)) {
+            return item;
+          }
+        });
+        // console.log("職業篩選後:", MapJobData);
+        return MapJobData;
+      });
+      setInterval(() => {
+        // console.log(EquipImgRender.value);
+      }, 2000);
 
       // 星火運作流程
       const SparkLvRate = reactive({ data: [] });
@@ -137,7 +170,7 @@ window.onload = () => {
         const IsGeneralEquip = ["頂培", "滅龍", "琉璃"];
         console.log(SparkLvRate.data);
         SparkType.value.is = "覺醒的輪迴星火";
-        UseImgItem.value.is = "雙手劍";
+        UseImgItem.value.is.alt = "雙手劍";
         const SparkRateArr = SparkLvRate.data.filter((item) => {
           if (item.key === SparkType.value.is) return item;
         });
@@ -171,7 +204,7 @@ window.onload = () => {
         }
         if (
           SparkType.value.is === "覺醒的輪迴星火" &&
-          !IsGeneralEquip.includes(UseImgItem.value.is)
+          !IsGeneralEquip.includes(UseImgItem.value.is.alt)
         ) {
           result = result.map((val) => {
             val += 2;
@@ -185,7 +218,7 @@ window.onload = () => {
         // 預設為Boss裝備 選取4排星火潛能
         let CreateDice = 4;
         const IsGeneralEquip = ["頂培", "滅龍", "琉璃"];
-        if (IsGeneralEquip.includes(UseImgItem.value.is)) {
+        if (IsGeneralEquip.includes(UseImgItem.value.is.alt)) {
           CreateDice = handCreateDice();
           // console.log(CreateDice);
         }
@@ -213,8 +246,10 @@ window.onload = () => {
           try {
             const res = await Promise.all(PromiseArr);
             EquipTypeData.data = res[0].data.data;
+            EquipImgData.data = res[1].data.data;
             weaponTypeData.data = res[2].data.data;
             SparkLvRate.data = res[3].data.data;
+            console.log(EquipImgData.data);
           } catch {
             console.error("沒接到API");
           }
@@ -234,6 +269,8 @@ window.onload = () => {
         handEquipType,
         handSparkType,
         handJobType,
+
+        EquipImgRender,
 
         UseSparkFrame,
       };

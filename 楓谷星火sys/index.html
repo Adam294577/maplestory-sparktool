@@ -45,11 +45,20 @@
           >圖點兩下<br />切換裝備</span
         >
         <ul
-          class="navList flex flex-col gap-y-4 h-[97%] overflow-hidden overflow-y-scroll pb-4"
+          class="navList flex flex-col gap-y-4 h-[97%] overflow-hidden overflow-y-scroll py-4"
+          v-if="EquipImgRender.length !== 0 "
         >
-          <li class="hidden">
-            <img src="" alt="裝備圖" />
-            <span>名稱</span>
+          <li
+            v-for="list in EquipImgRender"
+            :key="list.url"
+            class="flex justify-center flex-col items-center"
+          >
+            <img
+              class="w-[40px] mx-auto cursor-pointer"
+              :src="`./img/${list.url}.png`"
+              alt=""
+            />
+            <span class="text-sm font-bold pt-2">{{list.alt}}</span>
           </li>
         </ul>
       </nav>
@@ -173,6 +182,7 @@
         >
       </footer>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.36.0/minified.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <script src="./js/vue.js"></script>
     <script src="./js/main.js"></script>
