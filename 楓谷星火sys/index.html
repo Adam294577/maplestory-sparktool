@@ -53,6 +53,7 @@
           <li
             v-for="list in EquipImgRender"
             :key="list.url"
+            @dblclick="handImgItem(null,list.url)"
             class="flex justify-center flex-col items-center"
           >
             <img
@@ -101,8 +102,9 @@
             <select class="text-xs py-1 w-[120px]" v-model="JobType.is">
               <option
                 v-for="list in JobTypeData"
+                :key="list"
                 :value="list"
-                @change="handJobType(null,JobType.is)"
+                @change="handJobType(null,list)"
               >
                 {{list}}
               </option>
@@ -138,7 +140,13 @@
             />
             <div
               class="w-[35px] h-[35px] absolute z-10 -translate-x-1/2 left-1/2 top-[94px] bg-[#FFF]"
-            ></div>
+            >
+              <img
+                v-if="UseImgItem.is.url !== '-'"
+                :src="`./img/${UseImgItem.is.url}.png`"
+                :alt="UseImgItem.is.alt"
+              />
+            </div>
           </div>
 
           <div class="flex justify-around absolute left-0 bottom-4 w-full">

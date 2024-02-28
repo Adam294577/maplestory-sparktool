@@ -25,7 +25,7 @@ window.onload = () => {
             return item;
           }
         });
-        handJobType(null, JobType.value.is, result[0].defaultData.job);
+        handJobType(null, JobType.value.is);
         return result[0].jobArr;
       });
       const AimTypeData = computed(() => {
@@ -34,16 +34,14 @@ window.onload = () => {
         if (Usedata.length === 0) return [];
         // 特殊狀況: 當是神之子創世的時候
         // if (UseImgItem.value.is.alt === "琉璃") {
-        //   SparkType.value.is = "強力的輪迴星火";
-        //   AimType.value.is = "T3攻4B";
-        //   return ["T3攻4B", "T3攻6B", "T4攻以上"];
+
         // }
         let dataFilter = Usedata.filter((item) => {
           if (EquipType.value.is === item.key) {
             return item;
           }
         });
-        UseImgItem.value.is = dataFilter[0].defaultData.Img;
+        handImgItem(null, UseImgItem.value.is, dataFilter[0].defaultData.Img);
         if (SingleFilter.includes(EquipType.value.is)) {
           handAimType(null, AimType.value.is, dataFilter[0].defaultData.aim);
           return dataFilter[0].aimArr;
@@ -63,6 +61,9 @@ window.onload = () => {
               return item;
             }
           });
+          if (result.length === 0) return [];
+          // console.log("二次篩選", result);
+          // console.log("二次篩選預設值", result[0].default);
           handAimType(null, AimType.value.is, result[0].default);
 
           return result[0].aim;
@@ -72,7 +73,15 @@ window.onload = () => {
       const SparkType = ref({ is: "請選擇星火類型" });
       const JobType = ref({ is: "-" });
       const AimType = ref({ is: "-" });
-      const UseImgItem = ref({ is: {} });
+      const UseImgItem = ref({
+        is: {
+          type: "請選擇裝備類型",
+          job: ["-"],
+          url: "-",
+          alt: "-",
+        },
+      });
+      const DefaultJobChangeData = reactive({ data: [] });
       const weaponType = ref({ is: 6 });
       const UseSparkFrame = computed(() => {
         let key = SparkType.value.is;
@@ -83,11 +92,14 @@ window.onload = () => {
       const handEquipType = (el = null, key) => {
         EquipTypeData.data.forEach((item) => {
           if (item.key === key) {
+            // console.log(item.defaultData.aim);
             EquipType.value.is = item.key;
-            handSparkType(null, item.spark);
-            handJobType(null, item.job);
-            handAimType(null, item.aim);
-            UseImgItem.value.is = item.Img;
+            handSparkType(null, item.defaultData.spark);
+            if (EquipType.value.is !== "請選擇裝備類型") {
+              JobType.value.is = "劍士";
+            }
+            handAimType(null, item.defaultData.aim);
+            UseImgItem.value.is = item.defaultData.Img;
           }
         });
       };
@@ -98,13 +110,27 @@ window.onload = () => {
           SparkType.value.is = defaultKey;
         }
       };
-      const handJobType = (el = null, key, defaultKey) => {
-        if (key !== undefined) {
-          JobType.value.is = key;
-        } else {
-          JobType.value.is = defaultKey;
-        }
+      const handJobType = (el = null, key) => {
+        JobType.value.is = key;
+        DefaultJobChange();
       };
+      const DefaultJobChange = () => {
+        if (JobType.value.is === "-") return;
+        if (EquipType.value.is === "請選擇裝備類型") return;
+        if (UseImgItem.value.is.job.includes(JobType.value.is)) return;
+        // console.log("開始執行職業切換時 更新圖片功能:");
+        // console.log("現在圖片:", UseImgItem.value.is);
+        // console.log("職業:", JobType.value.is);
+        // console.log("裝備類型:", EquipType.value.is);
+        let data = DefaultJobChangeData.data;
+        let Mapdata = Object.groupBy(data, ({ type }) => type);
+        if (Mapdata[EquipType.value.is] === undefined) return;
+        // console.log('map後的資料',Mapdata[EquipType.value.is]);
+        Mapdata[EquipType.value.is].forEach((item) => {
+          if (JobType.value.is === item.job) handImgItem(null, item.Img.url);
+        });
+      };
+
       const handAimType = (el = null, key, defaultKey) => {
         if (key !== undefined) {
           AimType.value.is = key;
@@ -112,14 +138,14 @@ window.onload = () => {
           AimType.value.is = defaultKey;
         }
       };
-      // 切換圖片 &更新資料
+
+      // 裝備圖
       const EquipImgData = reactive({ data: [] });
       const EquipImgRender = computed(() => {
         let data = EquipImgData.data ?? [];
         if (data.length === 0) return [];
         if (EquipType.value.is === "請選擇裝備類型") return [];
         let MapEquipdata = Object.groupBy(data, ({ type }) => type);
-        handJobType(null, JobType.value.is, "劍士");
         let MapJobData = MapEquipdata[EquipType.value.is].filter((item) => {
           if (item.job.includes(JobType.value.is)) {
             return item;
@@ -128,9 +154,36 @@ window.onload = () => {
         // console.log("職業篩選後:", MapJobData);
         return MapJobData;
       });
-      setInterval(() => {
-        // console.log(EquipImgRender.value);
-      }, 2000);
+      const handImgItem = (el = null, key, defaultkey) => {
+        if (key !== undefined) {
+          // 給 EquipImgRender轉換圖片時間
+          setTimeout(() => {
+            // console.log("改變圖片");
+            EquipImgRender.value.forEach((item) => {
+              if (item.url === key) {
+                UseImgItem.value.is = item;
+                // 切換圖片時 依據不同的等級 預設目標也更新
+                if (item.type === "防具") {
+                  const newAimTxt = item.alt.substr(0, 2);
+                  if (newAimTxt === "航海") handAimType(null, "42主屬以上");
+                  if (newAimTxt === "神秘") handAimType(null, "51+3%主屬以上");
+                  if (newAimTxt === "永恆") handAimType(null, "54+3%主屬以上");
+                }
+                if (item.type === "漆黑") {
+                  const newAimTxt = item.alt;
+                  const Lv200Arr = ["夢幻", "指揮官"];
+                  Lv200Arr.includes(newAimTxt)
+                    ? handAimType(null, "51+3%主屬以上")
+                    : handAimType(null, "42+3%主屬以上");
+                }
+              }
+            });
+          }, 100);
+        } else {
+          console.log("預設圖", defaultkey);
+          UseImgItem.value.is = defaultkey;
+        }
+      };
 
       // 星火運作流程
       const SparkLvRate = reactive({ data: [] });
@@ -161,16 +214,12 @@ window.onload = () => {
       }
       // 生成各星火的等級
       function getSparkLv(count) {
-        console.log(5207);
         if (SparkType.value.is === "請選擇星火類型") {
           console.warn("請選擇星火類型");
           return [];
         }
         let result = [];
         const IsGeneralEquip = ["頂培", "滅龍", "琉璃"];
-        console.log(SparkLvRate.data);
-        SparkType.value.is = "覺醒的輪迴星火";
-        UseImgItem.value.is.alt = "雙手劍";
         const SparkRateArr = SparkLvRate.data.filter((item) => {
           if (item.key === SparkType.value.is) return item;
         });
@@ -240,6 +289,7 @@ window.onload = () => {
           api.get("ImgData.json"),
           api.get("weaponType.json"),
           api.get("SparkLvRate.json"),
+          api.get("DefaultJobChangeImg.json"),
         ];
 
         const init = async () => {
@@ -249,7 +299,7 @@ window.onload = () => {
             EquipImgData.data = res[1].data.data;
             weaponTypeData.data = res[2].data.data;
             SparkLvRate.data = res[3].data.data;
-            console.log(EquipImgData.data);
+            DefaultJobChangeData.data = res[4].data.data;
           } catch {
             console.error("沒接到API");
           }
@@ -269,9 +319,11 @@ window.onload = () => {
         handEquipType,
         handSparkType,
         handJobType,
-
+        // 裝備圖
+        UseImgItem,
         EquipImgRender,
-
+        handImgItem,
+        // 星火運算
         UseSparkFrame,
       };
     },
