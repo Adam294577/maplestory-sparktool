@@ -284,12 +284,13 @@
             <button
               v-show="!SparkAimBool"
               class="text-white w-[100px] md:scale-100 scale-[0.8] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
+              @click="DiceSparkToSuccess"
             >
-              點到有
+              {{SparkSuccessBtn}}
             </button>
             <button
               v-show="SparkAimBool"
-              class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
+              class="text-white w-[100px] md:scale-100 scale-[0.8] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
               @click="DiceSparkOnceFn"
             >
               繼續點
@@ -297,7 +298,7 @@
             <button
               v-show="SparkAimBool"
               @click="ResetSparkSys"
-              class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
+              class="text-white w-[100px] md:scale-100 scale-[0.8] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold"
             >
               重新開始
             </button>

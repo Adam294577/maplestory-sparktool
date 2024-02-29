@@ -458,6 +458,24 @@ window.onload = () => {
         CalculateSparkVal();
       };
       const SparkAnimateBool = ref(false);
+      const SparkSuccessBtn = computed(() => {
+        if (SparkType.value.is === "覺醒的輪迴星火") return "點到有";
+        if (SparkType.value.is !== "覺醒的輪迴星火") {
+          let arr = [
+            "51+3%主屬以上",
+            "69+3%主屬以上",
+            "57+3%主屬以上",
+            "78+3%主屬以上",
+            "42+3%主屬以上",
+          ];
+          if (arr.includes(AimType.value.is)) {
+            return "點10000次";
+          } else {
+            return "點到有";
+          }
+        }
+      });
+
       const DiceSparkOnceFn = () => {
         checkSparkList();
         if (checkAlert.value !== "") return alert("選單設定有誤 請確認");
@@ -478,6 +496,33 @@ window.onload = () => {
             SparkSysBool.value = false;
           }, 400);
         }
+      };
+      const DiceSparkToSuccess = () => {
+        checkSparkList();
+        if (checkAlert.value !== "") return alert("選單設定有誤 請確認");
+        if (SparkSysBool.value) return console.log("執行中 點了無效");
+        SparkSysBool.value = true;
+        const MaxTry = 10000;
+        let i = 0;
+        setTimeout(() => {
+          while (i < MaxTry) {
+            i++;
+            DiceSparkOnce();
+            // console.log(i);
+            if (SparkAimBool.value) {
+              console.log("測試目標");
+              SparkSysBool.value = false;
+              return;
+            }
+            if (i === MaxTry) {
+              console.log("太難洗了");
+              console.log("要加的次數", i);
+              console.log("總計次數", SparkCount.value);
+              SparkSysBool.value = false;
+              return;
+            }
+          }
+        }, 100);
       };
       const ResetSparkSys = () => {
         SparkAimBool.value = false;
@@ -735,6 +780,8 @@ window.onload = () => {
         // 星火運算
         UseSparkFrame,
         DiceSparkOnceFn,
+        DiceSparkToSuccess,
+        SparkSuccessBtn,
         SparkResultRender,
         SparkSysBool,
         hasSparkAnimate,
