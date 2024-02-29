@@ -89,9 +89,11 @@
 
       <div class="flex ml-[55px] md:ml-[100px] flex-wrap absolute">
         <!-- 選單區塊 -->
-        <div class="flex md:flex-col flex-wrap md:mt-8 mt-2 gap-y-2">
-          <label class="w-[50%] text-center md:text-left">
-            <span class="text-white mr-2"
+        <div
+          class="flex md:flex-col flex-wrap md:mt-8 mt-2 gap-y-2 justify-center md:justify-start"
+        >
+          <label class="w-[38%] md:w-full text-center md:text-left">
+            <span class="text-white mr-2 block md:inline-block"
               >裝備<span class="hidden md:inline-block px-1">:</span></span
             >
             <select
@@ -108,8 +110,8 @@
               <option value="防具">Boss裝備(防具)</option>
             </select>
           </label>
-          <label class="w-[50%] text-center md:text-left">
-            <span class="text-white mr-2"
+          <label class="w-[38%] md:w-full text-center md:text-left">
+            <span class="text-white mr-2 block md:inline-block"
               >星火<span class="hidden md:inline-block px-1">:</span></span
             >
             <select
@@ -124,8 +126,8 @@
             </select>
           </label>
 
-          <label class="w-[50%] text-center md:text-left">
-            <span class="text-white mr-2"
+          <label class="w-[38%] md:w-full text-center md:text-left">
+            <span class="text-white mr-2 block md:inline-block"
               >職業<span class="hidden md:inline-block px-1">:</span></span
             >
             <select
@@ -139,8 +141,8 @@
               </option>
             </select>
           </label>
-          <label class="w-[50%] text-center md:text-left relative">
-            <span class="text-white mr-2"
+          <label class="w-[38%] md:w-full text-center md:text-left relative">
+            <span class="text-white mr-2 block md:inline-block"
               >目標<span class="hidden md:inline-block px-1">:</span></span
             >
             <select
@@ -153,7 +155,7 @@
               </option>
             </select>
             <span
-              class="text-white absolute top-[calc(100%+5px)] left-0 w-[150px]"
+              class="text-white absolute top-[calc(100%+5px)] left-1/4 -translate-x-1/4 w-[150px]"
               v-show="EquipType.is === '創世'"
               >hint:<span class="ml-4 text-sm text-[#FF0]"
                 >{{WeaponTypeHint.key}}攻 = {{WeaponTypeHint.val}}攻</span
@@ -163,7 +165,9 @@
           <label
             class="w-full min-w-[150px] relative md:mt-6 mt-2 md:text-left"
           >
-            <span class="text-white block pl-8 md:pl-0">等值換算 :</span>
+            <span class="w-[50%] md:w-full text-white block text-center"
+              >等值換算 :</span
+            >
             <div class="max-w-[400px] mx-auto" v-show="EquipType.is ==='創世'">
               <div class="flex items-center py-1">
                 <span class="text-white inline-block w-[70px]">1%全屬</span>
