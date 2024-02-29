@@ -98,7 +98,6 @@ window.onload = () => {
         return `${baseURL}${key}框.png`;
       });
       const handEquipType = (el = null, key) => {
-        if (SparkSysBool.value) return;
         EquipTypeData.data.forEach((item) => {
           if (item.key === key) {
             // console.log(item.defaultData.aim);
@@ -113,7 +112,6 @@ window.onload = () => {
         });
       };
       const handSparkType = (el = null, key, defaultKey) => {
-        if (SparkSysBool.value) return;
         if (key !== undefined) {
           SparkType.value.is = key;
         } else {
@@ -121,7 +119,6 @@ window.onload = () => {
         }
       };
       const handJobType = (el = null, key) => {
-        if (SparkSysBool.value) return;
         JobType.value.is = key;
         DefaultJobChange();
       };
@@ -138,7 +135,6 @@ window.onload = () => {
       };
 
       const handAimType = (el = null, key, defaultKey) => {
-        if (SparkSysBool.value) return;
         if (key !== undefined) {
           AimType.value.is = key;
           // 創世武器切換目標時 ， 更新提示詞
@@ -187,7 +183,6 @@ window.onload = () => {
         return MapJobData;
       });
       const handImgItem = (el = null, key, defaultkey) => {
-        if (SparkSysBool.value) return;
         if (key !== undefined) {
           // 給 EquipImgRender轉換圖片時間
           setTimeout(() => {
@@ -198,15 +193,15 @@ window.onload = () => {
                 if (item.type === "防具") {
                   const newAimTxt = item.alt.substr(0, 2);
                   if (newAimTxt === "航海") handAimType(null, "42主屬以上");
-                  if (newAimTxt === "神秘") handAimType(null, "51+3%主屬以上");
-                  if (newAimTxt === "永恆") handAimType(null, "57+3%主屬以上");
+                  if (newAimTxt === "神秘") handAimType(null, "69主屬以上");
+                  if (newAimTxt === "永恆") handAimType(null, "78主屬以上");
                 }
                 if (item.type === "漆黑") {
                   const newAimTxt = item.alt;
                   const Lv200Arr = ["夢幻", "指揮官"];
                   Lv200Arr.includes(newAimTxt)
-                    ? handAimType(null, "51+3%主屬以上")
-                    : handAimType(null, "42+3%主屬以上");
+                    ? handAimType(null, "69主屬以上")
+                    : handAimType(null, "57主屬以上");
                 }
                 if (item.type === "創世") {
                   if (item.alt === "琉璃") {
@@ -230,10 +225,11 @@ window.onload = () => {
           if (item.weapon.includes(UseImgItem.value.is.alt))
             weaponType.value.is = item;
         });
-        console.log(weaponType.value.is);
+        // console.log(weaponType.value.is);
       };
       // 等值換算
       const AllSTATtoATK = ref(5.3);
+      const MAINSTATtoATK = ref(0.5);
       const BOSStoATK = ref(5.5);
       const AllSTATtoMAINSTAT = ref(9.5);
       const SUBtoMAINSTAT = ref(0.07);
@@ -242,7 +238,7 @@ window.onload = () => {
       // 星火運作流程
       const SparkLvRate = reactive({ data: [] });
       const SparkAttrData = reactive({ data: [] });
-
+      const hasSparkAnimate = ref(false);
       const handCreateDice = () => {
         let diceCountArr = [40, 80, 95, 100];
         let min = 0.01;
@@ -331,8 +327,23 @@ window.onload = () => {
       }
       const SparkResult = ref({ is: [] });
       const SparkSysBool = ref(false);
+      const SparkAimBool = ref(false);
       const SparkGoal = ref({ key: "stat", is: 0 });
       const SparkCount = ref(0);
+      const SparkCountRender = computed(() => {
+        // console.log("水溝數", SparkCount.value);
+        if (SparkCount.value === 0) {
+          return false;
+        } else {
+          if (SparkAimBool.value) {
+            return `已用了 ${SparkCount.value}科 ${SparkType.value.is} 洗到了 ^_^`;
+          }
+          if (!SparkAimBool.value) {
+            return `已用了 ${SparkCount.value}科 ${SparkType.value.is} 水溝了 T_T`;
+          }
+        }
+      });
+
       const handSparkGoal = () => {
         if (EquipType.value.is === "創世") {
           SparkGoal.value.key = "atk";
@@ -351,7 +362,7 @@ window.onload = () => {
           if (AimType.value.is === "6B+T3攻+T3有用") {
             // 假設T3有用為 T3主屬(+33)作為目標
             SparkGoal.value.is =
-              33 * (1 / ATKtoMAINSTAT.value) +
+              33 * MAINSTATtoATK +
               6 * BOSStoATK.value +
               WeaponTypeHint.value.val;
           }
@@ -391,26 +402,50 @@ window.onload = () => {
           if (JobType.value.is === "海盜力") SparkGoal.value.key = "STR";
           if (JobType.value.is === "海盜敏") SparkGoal.value.key = "DEX";
         }
-        console.log("最後制定目標:", SparkGoal.value);
+        // console.log("最後制定目標:", SparkGoal.value);
       };
+      const checkSparkList = () => {
+        let i = 0;
+        if (EquipType.value.is === "請選擇裝備類型") i++;
+        if (SparkType.value.is === "請選擇星火類型") i++;
+        if (JobType.value.is === "-") i++;
+        if (AimType.value.is === "-") i++;
+        if (isNaN(AllSTATtoATK.value)) i++;
+        if (isNaN(BOSStoATK.value)) i++;
+        if (isNaN(AllSTATtoMAINSTAT.value)) i++;
+        if (isNaN(SUBtoMAINSTAT.value)) i++;
+        if (isNaN(ATKtoMAINSTAT.value)) i++;
+        if (isNaN(MAINSTATtoATK.value)) i++;
+        if (IsTwoSubStats.value === true && JobType.value.is !== "盜賊") i++;
+        if (SparkType.value.is !== "覺醒的輪迴星火") {
+          const disableArr = [
+            "6B+T4攻以上",
+            "T4攻以上",
+            "T5攻以上",
+            "T6攻以上",
+            "T7攻",
+          ];
+          if (disableArr.includes(AimType.value.is)) i++;
+        }
+        i > 0 ? (checkAlertBool.value = true) : (checkAlertBool.value = false);
+      };
+      const checkAlertBool = ref(false);
+      const checkAlert = computed(() => {
+        if (checkAlertBool.value) return `選單設定有誤 請確認`;
+        if (!checkAlertBool.value) return "";
+      });
       const DiceSparkOnce = () => {
-        if (SparkSysBool.value) return console.log("執行中 不可再點");
-        SparkSysBool.value = true;
         handSparkGoal();
-
+        SparkCount.value++;
+        SparkAimBool.value = false;
         // 預設為Boss裝備 選取4排星火潛能
         let CreateDice = 4;
-
         const IsGeneralEquip = ["頂耳", "頂腰", "頂鍊", "滅龍", "琉璃"];
-        if (IsGeneralEquip.includes(UseImgItem.value.is.alt)) {
+        if (IsGeneralEquip.includes(UseImgItem.value.is.alt))
           CreateDice = handCreateDice();
-          // console.log(CreateDice);
-        }
         const SparkLvArr = getSparkLv(CreateDice);
         if (SparkLvArr.length === 0) return;
         const SparkAttrArr = getSparkAttr(19, CreateDice);
-        // console.log("星火屬性索引值", SparkAttrArr);
-        // console.log("星火屬性等級", SparkLvArr);
         SparkResult.value.is = [];
         SparkResultRender.value = [];
         for (let i = 0; i < SparkAttrArr.length; i++) {
@@ -422,8 +457,36 @@ window.onload = () => {
         // console.log(SparkResult.value.is);
         CalculateSparkVal();
       };
+      const SparkAnimateBool = ref(false);
+      const DiceSparkOnceFn = () => {
+        checkSparkList();
+        if (checkAlert.value !== "") return alert("選單設定有誤 請確認");
+        if (SparkSysBool.value) return console.log("執行中 點了無效");
+        SparkSysBool.value = true;
+        // 先清空字串內容 確保動畫流暢
+        SparkResultRender.value = [];
+        DiceSparkOnce();
+        if (!hasSparkAnimate.value) {
+          SparkSysBool.value = false;
+          return;
+        } else {
+          SparkAnimateBool.value = true;
+          setTimeout(() => {
+            SparkAnimateBool.value = false;
+          }, 200);
+          setTimeout(() => {
+            SparkSysBool.value = false;
+          }, 400);
+        }
+      };
+      const ResetSparkSys = () => {
+        SparkAimBool.value = false;
+        SparkCount.value = 0;
+        SparkResultRender.value = [];
+      };
       const SparkResultRender = ref([]);
       const SparkPlusRule = reactive({ data: [] });
+      const IsTwoSubStats = ref(false);
       const CalculateSparkVal = () => {
         let oneAttr = 0;
         let twoAttr = 0;
@@ -541,10 +604,75 @@ window.onload = () => {
             SparkResultRender.value.push({ title: msgTitle, val: msgVal });
           }
         });
-        console.log("顯示結果", SparkResultRender.value);
-        if (true) {
+        let aim = { key: "", val: 0 };
+        aim.key = SparkGoal.value.key;
+        if (aim.key === "atk") {
+          let AtkVal = 0;
+          let MainVal = 0;
+          let AllVal = attrdata[14].val;
+          let BossVal = attrdata[10].val + attrdata[11].val;
+          if (JobType.value.is === "劍士" || JobType.value.is === "海盜力") {
+            MainVal += attrdata[0].val;
+            MainVal += attrdata[1].val * SUBtoMAINSTAT.value;
+          }
+          if (JobType.value.is === "弓箭手" || JobType.value.is === "海盜敏") {
+            MainVal += attrdata[1].val;
+            MainVal += attrdata[0].val * SUBtoMAINSTAT.value;
+          }
+          if (JobType.value.is === "法師") {
+            MainVal += attrdata[2].val;
+            MainVal += attrdata[3].val * SUBtoMAINSTAT.value;
+          }
+          if (JobType.value.is === "盜賊") {
+            MainVal += attrdata[3].val;
+            MainVal += attrdata[1].val * SUBtoMAINSTAT.value;
+            if (IsTwoSubStats.value) {
+              MainVal += attrdata[0].val * SUBtoMAINSTAT.value;
+            }
+          }
+          if (JobType.value.is === "法師") {
+            AtkVal += attrdata[13].val;
+          } else {
+            AtkVal += attrdata[12].val;
+          }
+          AtkVal += MainVal * MAINSTATtoATK.value;
+          AtkVal += BossVal * BOSStoATK.value;
+          AtkVal += AllVal * AllSTATtoATK.value;
+          aim.val = AtkVal;
+          // console.log("這次的計算攻擊量:", aim.val);
+        } else {
+          let MainVal = 0;
+          let AllVal = attrdata[14].val;
+          let AtkVal = attrdata[12].val;
+          if (JobType.value.is === "劍士" || JobType.value.is === "海盜力") {
+            MainVal += attrdata[0].val;
+            MainVal += attrdata[1].val * SUBtoMAINSTAT.value;
+          }
+          if (JobType.value.is === "弓箭手" || JobType.value.is === "海盜敏") {
+            MainVal += attrdata[1].val;
+            MainVal += attrdata[0].val * SUBtoMAINSTAT.value;
+          }
+          if (JobType.value.is === "法師") {
+            MainVal += attrdata[2].val;
+            MainVal += attrdata[3].val * SUBtoMAINSTAT.value;
+          }
+          if (JobType.value.is === "盜賊") {
+            MainVal += attrdata[3].val;
+            MainVal += attrdata[1].val * SUBtoMAINSTAT.value;
+            if (IsTwoSubStats.value) {
+              MainVal += attrdata[0].val * SUBtoMAINSTAT.value;
+            }
+          }
+          MainVal += AllVal * AllSTATtoMAINSTAT.value;
+          MainVal += AtkVal * ATKtoMAINSTAT.value;
+          aim.val = MainVal;
+          // console.log("這次的計算主屬量:", aim.val);
+        }
+
+        if (aim.val >= SparkGoal.value.is) {
+          console.log("顯示結果", SparkResultRender.value);
           console.log("目標達成");
-          SparkSysBool.value = false;
+          SparkAimBool.value = true;
         }
       };
       onMounted(() => {
@@ -590,6 +718,7 @@ window.onload = () => {
         handEquipType,
         handSparkType,
         handJobType,
+        IsTwoSubStats,
         // 目標提示詞
         WeaponTypeHint,
         // 裝備圖
@@ -598,15 +727,23 @@ window.onload = () => {
         handImgItem,
         // 等值換算
         AllSTATtoATK,
+        MAINSTATtoATK,
         BOSStoATK,
         AllSTATtoMAINSTAT,
         SUBtoMAINSTAT,
         ATKtoMAINSTAT,
         // 星火運算
         UseSparkFrame,
-        DiceSparkOnce,
+        DiceSparkOnceFn,
         SparkResultRender,
         SparkSysBool,
+        hasSparkAnimate,
+        SparkAnimateBool,
+        SparkCount,
+        SparkCountRender,
+        SparkAimBool,
+        checkAlert,
+        ResetSparkSys,
       };
     },
   };
