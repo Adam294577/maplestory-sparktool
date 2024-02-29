@@ -29,20 +29,20 @@
         --sb-thumb-color: #ffffff;
         --sb-size: 4px;
       }
-
-      .navList::-webkit-scrollbar,
       body::-webkit-scrollbar {
+        width: 0;
+      }
+
+      .navList::-webkit-scrollbar {
         width: var(--sb-size);
       }
 
-      .navList::-webkit-scrollbar-track,
-      body::-webkit-scrollbar-track {
+      .navList::-webkit-scrollbar-track {
         background: var(--sb-track-color);
         border-radius: 5px;
       }
 
-      .navList::-webkit-scrollbar-thumb,
-      body::-webkit-scrollbar-thumb {
+      .navList::-webkit-scrollbar-thumb {
         background: var(--sb-thumb-color);
         border-radius: 5px;
       }
@@ -57,13 +57,13 @@
   <body>
     <div id="app">
       <h1
-        class="lg:text-2xl text-lg text-white text-center font-bold mt-5 relative"
+        class="lg:text-2xl text-lg text-white text-center font-bold mt-5 pt-2 relative"
       >
         星火模擬器-Beta版
         <span
           v-show="SparkCount === 0"
           class="absolute text-[#FF0] text-sm w-[200px] -top-4 md:left-[78px] left-[30px]"
-          >圖點兩下可切換裝備</span
+          >點擊左圖可切換裝備</span
         >
       </h1>
       <nav class="fixed md:w-[75px] w-[50px] h-full top-0 left-0 bg-[#999]">
@@ -74,7 +74,7 @@
           <li
             v-for="list in EquipImgRender"
             :key="list.url"
-            @dblclick="handImgItem(null,list.url)"
+            @click="handImgItem(null,list.url)"
             class="flex justify-center flex-col items-center"
           >
             <img
@@ -90,7 +90,7 @@
       <div class="flex ml-[55px] md:ml-[100px] flex-wrap absolute">
         <!-- 選單區塊 -->
         <div class="flex md:flex-col flex-wrap md:mt-8 mt-2 gap-y-2">
-          <label class="w-[50%]">
+          <label class="w-[50%] text-center md:text-left">
             <span class="text-white mr-2">裝備 :</span>
             <select
               class="text-xs py-1 w-[120px]"
@@ -106,7 +106,7 @@
               <option value="防具">Boss裝備(防具)</option>
             </select>
           </label>
-          <label class="w-[50%]">
+          <label class="w-[50%] text-center md:text-left">
             <span class="text-white mr-2">星火 :</span>
             <select
               class="text-xs py-1 w-[120px]"
@@ -120,7 +120,7 @@
             </select>
           </label>
 
-          <label class="w-[50%]">
+          <label class="w-[50%] text-center md:text-left">
             <span class="text-white mr-2">職業 :</span>
             <select
               class="text-xs py-1 w-[120px]"
@@ -133,7 +133,7 @@
               </option>
             </select>
           </label>
-          <label class="w-[50%] relative">
+          <label class="w-[50%] text-center md:text-left relative">
             <span class="text-white mr-2">目標 :</span>
             <select
               class="text-xs py-1 w-[120px]"
@@ -152,9 +152,11 @@
               ></span
             >
           </label>
-          <label class="w-full min-w-[150px] relative md:mt-6 mt-2">
-            <span class="text-white mr-2 block">等值換算 :</span>
-            <div v-show="EquipType.is ==='創世'">
+          <label
+            class="w-full min-w-[150px] relative md:mt-6 mt-2 md:text-left"
+          >
+            <span class="text-white block pl-8 md:pl-0">等值換算 :</span>
+            <div class="max-w-[400px] mx-auto" v-show="EquipType.is ==='創世'">
               <div class="flex items-center py-1">
                 <span class="text-white inline-block w-[70px]">1%全屬</span>
                 <span class="text-white pr-4">=</span>
@@ -192,7 +194,10 @@
                 <span class="text-white">攻</span>
               </div>
             </div>
-            <div v-show="EquipType.is !=='創世'" class="relative">
+            <div
+              v-show="EquipType.is !=='創世'"
+              class="relative max-w-[400px] mx-auto"
+            >
               <div class="flex items-center py-1">
                 <span class="text-white inline-block w-[70px]">1%全屬</span>
                 <span class="text-white pr-4">=</span>

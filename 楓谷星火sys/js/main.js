@@ -183,6 +183,7 @@ window.onload = () => {
         return MapJobData;
       });
       const handImgItem = (el = null, key, defaultkey) => {
+        if (SparkAimBool.value) return;
         if (key !== undefined) {
           // 給 EquipImgRender轉換圖片時間
           setTimeout(() => {
@@ -462,6 +463,12 @@ window.onload = () => {
       };
       const SparkAnimateBool = ref(false);
       const SparkSuccessBtn = computed(() => {
+        if (
+          SparkType.value.is === "覺醒的輪迴星火" &&
+          EquipType.value.is === "頂培" &&
+          AimType.value.is === "48主屬以上"
+        )
+          return "點30000次";
         if (SparkType.value.is === "覺醒的輪迴星火") return "點到有";
         if (SparkType.value.is !== "覺醒的輪迴星火") {
           let arr = [
@@ -472,7 +479,7 @@ window.onload = () => {
             "42+3%主屬以上",
           ];
           if (arr.includes(AimType.value.is)) {
-            return "點10000次";
+            return "點30000次";
           } else {
             return "點到有";
           }
@@ -505,7 +512,7 @@ window.onload = () => {
         if (checkAlert.value !== "") return alert("選單設定有誤 請確認");
         if (SparkSysBool.value) return console.log("執行中 點了無效");
         SparkSysBool.value = true;
-        const MaxTry = 10000;
+        const MaxTry = 30000;
         let i = 0;
         setTimeout(() => {
           while (i < MaxTry) {
