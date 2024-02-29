@@ -91,7 +91,9 @@
         <!-- 選單區塊 -->
         <div class="flex md:flex-col flex-wrap md:mt-8 mt-2 gap-y-2">
           <label class="w-[50%] text-center md:text-left">
-            <span class="text-white mr-2">裝備 :</span>
+            <span class="text-white mr-2"
+              >裝備<span class="hidden md:inline-block px-1">:</span></span
+            >
             <select
               class="text-xs py-1 w-[120px]"
               v-model="EquipType.is"
@@ -107,7 +109,9 @@
             </select>
           </label>
           <label class="w-[50%] text-center md:text-left">
-            <span class="text-white mr-2">星火 :</span>
+            <span class="text-white mr-2"
+              >星火<span class="hidden md:inline-block px-1">:</span></span
+            >
             <select
               class="text-xs py-1 w-[120px]"
               v-model="SparkType.is"
@@ -121,7 +125,9 @@
           </label>
 
           <label class="w-[50%] text-center md:text-left">
-            <span class="text-white mr-2">職業 :</span>
+            <span class="text-white mr-2"
+              >職業<span class="hidden md:inline-block px-1">:</span></span
+            >
             <select
               class="text-xs py-1 w-[120px]"
               :disabled="SparkCount !== 0"
@@ -134,7 +140,9 @@
             </select>
           </label>
           <label class="w-[50%] text-center md:text-left relative">
-            <span class="text-white mr-2">目標 :</span>
+            <span class="text-white mr-2"
+              >目標<span class="hidden md:inline-block px-1">:</span></span
+            >
             <select
               class="text-xs py-1 w-[120px]"
               :disabled="SparkCount !== 0"
