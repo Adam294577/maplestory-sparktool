@@ -314,18 +314,17 @@
 
         <div
           v-show="SparkCount !== 0"
-          class="text-white max-w-[800px] mx-auto font-bold md:mt-[9rem] mt-12 text-sm md:text-base"
+          class="text-white max-w-[400px] mx-auto font-bold md:mt-[9rem] mt-12 text-sm md:text-base"
         >
-          <span class="inline-block p-2">結果: </span>
-          <span class="text-sm ml-8 inline-block">{{SparkCountRender}}</span>
+          <span class="inline-block pr-2">結果: </span>
+          <span class="text-sm md:ml-8 inline-block">{{SparkCountRender}}</span>
         </div>
         <div
           v-show="checkAlert !== ''"
-          class="text-white max-w-[800px] w-[90%] mx-auto font-bold md:mt-[9rem] mt-8 flex items-center"
+          class="text-white max-w-[400px] mx-auto font-bold md:mt-[9rem] mt-12 text-sm md:text-base"
         >
-          <span>錯誤: </span>
-          <!-- <span class="text-base ml-4">洗了 ? 科 XX星火 出貨了!!</span> -->
-          <span class="text-base ml-4 text-[#FF0]">{{checkAlert}}</span>
+          <span class="inline-block pr-2">錯誤: </span>
+          <span class="text-sm md:ml-8 inline-block">{{checkAlert}}</span>
         </div>
       </div>
 
