@@ -43,15 +43,15 @@
   </head>
   <body>
     <div id="app">
-      <h1 class="text-2xl text-white text-center font-bold mt-10">
+      <h1 class="text-2xl text-white text-center font-bold mt-10 relative">
         星火模擬器-Beta版
-      </h1>
-      <nav class="fixed md:w-[75px] w-[50px] h-full top-0 left-0 bg-[#999]">
         <span
           v-show="SparkCount === 0"
-          class="absolute top-4 left-[75px] md:left-[80px] text-[#FF0] text-sm w-[200px]"
+          class="absolute text-[#FF0] text-sm w-[200px] -top-7 md:left-[78px] left-[30px]"
           >圖點兩下可切換裝備</span
         >
+      </h1>
+      <nav class="fixed md:w-[75px] w-[50px] h-full top-0 left-0 bg-[#999]">
         <ul
           class="navList flex flex-col gap-y-4 h-[97%] overflow-hidden overflow-y-scroll py-4"
           v-if="EquipImgRender.length !== 0 "
@@ -314,14 +314,14 @@
 
         <div
           v-show="SparkCount !== 0"
-          class="text-white max-w-[800px] w-[90%] md:pl-12 mx-auto font-bold md:mt-[9rem] mt-12 flex items-center"
+          class="text-white max-w-[800px] font-bold md:mt-[9rem] mt-12 flex items-center text-sm md:text-base border-2 border-red-600"
         >
           <span>結果: </span>
           <span class="text-sm ml-4">{{SparkCountRender}}</span>
         </div>
         <div
           v-show="checkAlert !== ''"
-          class="text-white max-w-[800px] w-[90%] md:pl-12 mx-auto font-bold md:mt-[9rem] mt-8 flex items-center"
+          class="text-white max-w-[800px] w-[90%] mx-auto font-bold md:mt-[9rem] mt-8 flex items-center"
         >
           <span>錯誤: </span>
           <!-- <span class="text-base ml-4">洗了 ? 科 XX星火 出貨了!!</span> -->
