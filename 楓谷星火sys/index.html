@@ -17,16 +17,19 @@
         --sb-size: 4px;
       }
 
-      .navList::-webkit-scrollbar {
+      .navList::-webkit-scrollbar,
+      body::-webkit-scrollbar {
         width: var(--sb-size);
       }
 
-      .navList::-webkit-scrollbar-track {
+      .navList::-webkit-scrollbar-track,
+      body::-webkit-scrollbar-track {
         background: var(--sb-track-color);
         border-radius: 5px;
       }
 
-      .navList::-webkit-scrollbar-thumb {
+      .navList::-webkit-scrollbar-thumb,
+      body::-webkit-scrollbar-thumb {
         background: var(--sb-thumb-color);
         border-radius: 5px;
       }
@@ -46,7 +49,7 @@
       <nav class="fixed md:w-[75px] w-[50px] h-full top-0 left-0 bg-[#999]">
         <span
           v-show="SparkCount === 0"
-          class="absolute top-4 left-[75px] md:left-[80px] text-[#FF0] text-sm"
+          class="absolute top-4 left-[75px] md:left-[80px] text-[#FF0] text-sm w-[200px]"
           >圖點兩下可切換裝備</span
         >
         <ul
@@ -223,7 +226,7 @@
           </label>
         </div>
       </div>
-      <div class="mt-[20rem] md:mt-[2rem] md:ml-20 ml-28 pb-[3rem]">
+      <div class="mt-[20rem] md:mt-[2rem] md:ml-20 ml-28 pb-[6rem]">
         <!-- 運行區塊 -->
         <div
           class="select-none mt-4 min-h-[400px] mx-auto p-4 w-[40%] max-w-[800px] min-w-[270px] relative xl:-left-7 -left-10 md:left-10 rounded-md bg-[#ffcc99] origin-top md:scale-125 scale-100"
@@ -311,7 +314,7 @@
 
         <div
           v-show="SparkCount !== 0"
-          class="text-white max-w-[800px] w-[90%] md:pl-12 mx-auto font-bold md:mt-[9rem] mt-8 flex items-center"
+          class="text-white max-w-[800px] w-[90%] md:pl-12 mx-auto font-bold md:mt-[9rem] mt-12 flex items-center"
         >
           <span>結果: </span>
           <span class="text-sm ml-4">{{SparkCountRender}}</span>
