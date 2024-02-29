@@ -87,7 +87,7 @@
         </ul>
       </nav>
 
-      <div class="flex ml-[55px] md:ml-[100px] flex-wrap absolute">
+      <div class="flex ml-[55px] md:ml-[100px] flex-wrap absolute z-10">
         <!-- 選單區塊 -->
         <div
           class="flex md:flex-col flex-wrap md:mt-8 mt-2 md:gap-y-2 gap-y-0 justify-center md:justify-start"
@@ -262,7 +262,7 @@
           </label>
         </div>
       </div>
-      <div class="mt-[20rem] md:mt-[2rem] md:ml-20 ml-28 pb-[4rem]">
+      <div class="mt-[20rem] md:mt-[2rem] md:ml-20 ml-28 pb-[6rem] relative">
         <!-- 運行區塊 -->
         <div
           class="select-none mt-4 min-h-[400px] mx-auto p-4 w-[40%] max-w-[800px] min-w-[270px] relative xl:-left-7 -left-10 md:left-10 rounded-md bg-[#ffcc99] origin-top md:scale-125 scale-100"
@@ -342,9 +342,18 @@
               重新開始
             </button>
           </div>
-          <div class="absolute top-[calc(100%+10px)]">
+          <div
+            class="absolute top-[calc(100%+10px)] w-[80%] max-w-[800px] min-w-[270px]"
+          >
             <input type="checkbox" v-model="hasSparkAnimate" />
             <span class="text-white text-sm ml-2">動畫效果</span>
+            <button
+              class="text-white w-[100px] md:scale-100 scale-[0.8] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold absolute right-8 -top-2 md:right-0"
+              @click="ResetSparkSys"
+              v-show="ChangeAimBool"
+            >
+              重設目標
+            </button>
           </div>
         </div>
 
