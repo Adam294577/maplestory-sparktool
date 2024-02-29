@@ -314,10 +314,10 @@
 
         <div
           v-show="SparkCount !== 0"
-          class="text-white max-w-[800px] font-bold md:mt-[9rem] mt-12 flex items-center text-sm md:text-base border-2 border-red-600"
+          class="text-white max-w-[800px] mx-auto font-bold md:mt-[9rem] mt-12 text-sm md:text-base"
         >
-          <span>結果: </span>
-          <span class="text-sm ml-4">{{SparkCountRender}}</span>
+          <span class="inline-block p-2">結果: </span>
+          <span class="text-sm ml-8 inline-block">{{SparkCountRender}}</span>
         </div>
         <div
           v-show="checkAlert !== ''"
