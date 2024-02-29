@@ -362,7 +362,7 @@ window.onload = () => {
           if (AimType.value.is === "6B+T3攻+T3有用") {
             // 假設T3有用為 T3主屬(+33)作為目標
             SparkGoal.value.is =
-              33 * MAINSTATtoATK +
+              33 * MAINSTATtoATK.value +
               6 * BOSStoATK.value +
               WeaponTypeHint.value.val;
           }
