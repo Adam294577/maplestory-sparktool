@@ -90,9 +90,9 @@
       <div class="flex ml-[55px] md:ml-[100px] flex-wrap absolute">
         <!-- 選單區塊 -->
         <div
-          class="flex md:flex-col flex-wrap md:mt-8 mt-2 gap-y-2 justify-center md:justify-start"
+          class="flex md:flex-col flex-wrap md:mt-8 mt-2 md:gap-y-2 gap-y-0 justify-center md:justify-start"
         >
-          <label class="w-[38%] md:w-full text-center md:text-left">
+          <label class="w-[38%] p-1 md:w-full text-center md:text-left">
             <span class="text-white mr-2 block md:inline-block"
               >裝備<span class="hidden md:inline-block px-1">:</span></span
             >
@@ -110,7 +110,7 @@
               <option value="防具">Boss裝備(防具)</option>
             </select>
           </label>
-          <label class="w-[38%] md:w-full text-center md:text-left">
+          <label class="w-[38%] p-1 md:w-full text-center md:text-left">
             <span class="text-white mr-2 block md:inline-block"
               >星火<span class="hidden md:inline-block px-1">:</span></span
             >
@@ -126,7 +126,7 @@
             </select>
           </label>
 
-          <label class="w-[38%] md:w-full text-center md:text-left">
+          <label class="w-[38%] p-1 md:w-full text-center md:text-left">
             <span class="text-white mr-2 block md:inline-block"
               >職業<span class="hidden md:inline-block px-1">:</span></span
             >
@@ -141,7 +141,9 @@
               </option>
             </select>
           </label>
-          <label class="w-[38%] md:w-full text-center md:text-left relative">
+          <label
+            class="w-[38%] p-1 md:w-full text-center md:text-left relative"
+          >
             <span class="text-white mr-2 block md:inline-block"
               >目標<span class="hidden md:inline-block px-1">:</span></span
             >
@@ -155,7 +157,7 @@
               </option>
             </select>
             <span
-              class="text-white absolute top-[calc(100%+5px)] left-1/4 -translate-x-1/4 w-[150px]"
+              class="text-white absolute top-[calc(100%)] left-1/4 -translate-x-1/4 w-[150px]"
               v-show="EquipType.is === '創世'"
               >hint:<span class="ml-4 text-sm text-[#FF0]"
                 >{{WeaponTypeHint.key}}攻 = {{WeaponTypeHint.val}}攻</span
@@ -163,13 +165,13 @@
             >
           </label>
           <label
-            class="w-full min-w-[150px] relative md:mt-6 mt-2 md:text-left"
+            class="w-full min-w-[150px] relative mt-6 md:text-left mx-auto"
           >
-            <span class="w-[50%] md:w-full text-white block text-center"
+            <span class="md:w-full text-white block text-center"
               >等值換算 :</span
             >
             <div class="max-w-[400px] mx-auto" v-show="EquipType.is ==='創世'">
-              <div class="flex items-center py-1">
+              <div class="flex items-center py-1 justify-center">
                 <span class="text-white inline-block w-[70px]">1%全屬</span>
                 <span class="text-white pr-4">=</span>
                 <input
@@ -181,7 +183,7 @@
                 />
                 <span class="text-white">攻</span>
               </div>
-              <div class="flex items-center py-1">
+              <div class="flex items-center py-1 justify-center">
                 <span class="text-white inline-block w-[70px]">1主屬</span>
                 <span class="text-white pr-4">=</span>
                 <input
@@ -193,7 +195,7 @@
                 />
                 <span class="text-white">攻</span>
               </div>
-              <div class="flex items-center py-1">
+              <div class="flex items-center py-1 justify-center">
                 <span class="text-white inline-block w-[70px]">1B</span>
                 <span class="text-white pr-4">=</span>
                 <input
@@ -210,7 +212,7 @@
               v-show="EquipType.is !=='創世'"
               class="relative max-w-[400px] mx-auto"
             >
-              <div class="flex items-center py-1">
+              <div class="flex items-center py-1 justify-center">
                 <span class="text-white inline-block w-[70px]">1%全屬</span>
                 <span class="text-white pr-4">=</span>
                 <input
@@ -222,7 +224,7 @@
                 />
                 <span class="text-white">主屬</span>
               </div>
-              <div class="flex items-center py-1">
+              <div class="flex items-center py-1 justify-center">
                 <span class="text-white inline-block w-[70px]">1攻</span>
                 <span class="text-white pr-4">=</span>
                 <input
@@ -234,7 +236,7 @@
                 />
                 <span class="text-white">主屬</span>
               </div>
-              <div class="flex items-center py-1">
+              <div class="flex items-center py-1 justify-center">
                 <span class="text-white inline-block w-[70px]">1副屬</span>
                 <span class="text-white pr-4">=</span>
                 <input
@@ -246,7 +248,9 @@
                 />
                 <span class="text-white">主屬</span>
               </div>
-              <div class="flex items-center py-1 md:relative md:left-0">
+              <div
+                class="flex items-center py-1 justify-center md:relative md:left-0"
+              >
                 <input
                   type="checkbox"
                   v-model="IsTwoSubStats"
@@ -258,7 +262,7 @@
           </label>
         </div>
       </div>
-      <div class="mt-[18rem] md:mt-[2rem] md:ml-20 ml-28 pb-[4rem]">
+      <div class="mt-[20rem] md:mt-[2rem] md:ml-20 ml-28 pb-[4rem]">
         <!-- 運行區塊 -->
         <div
           class="select-none mt-4 min-h-[400px] mx-auto p-4 w-[40%] max-w-[800px] min-w-[270px] relative xl:-left-7 -left-10 md:left-10 rounded-md bg-[#ffcc99] origin-top md:scale-125 scale-100"
