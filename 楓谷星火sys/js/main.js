@@ -456,6 +456,9 @@ window.onload = () => {
         }
         // console.log(SparkResult.value.is);
         CalculateSparkVal();
+        setTimeout(() => {
+          window.scrollTo({ top: 9999 });
+        }, 1);
       };
       const SparkAnimateBool = ref(false);
       const SparkSuccessBtn = computed(() => {
@@ -528,6 +531,7 @@ window.onload = () => {
         SparkAimBool.value = false;
         SparkCount.value = 0;
         SparkResultRender.value = [];
+        window.scrollTo({ top: 0 });
       };
       const SparkResultRender = ref([]);
       const SparkPlusRule = reactive({ data: [] });
