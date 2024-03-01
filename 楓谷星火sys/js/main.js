@@ -32,6 +32,11 @@ window.onload = () => {
         return result[0].jobArr;
       });
       const handHpArrData = (arr) => {
+        const IsGeneralEquip = ["頂耳", "頂腰", "頂鍊", "滅龍"];
+        if (IsGeneralEquip.includes(UseImgItem.value.is.alt)) {
+          let idx = arr.indexOf("T6HP以上");
+          arr = arr.slice(0, idx);
+        }
         if (arr.includes("T4HP以上") && JobType.value.is === "劍士") return arr;
         if (arr.includes("T4HP以上") && JobType.value.is !== "劍士") {
           let idx = arr.indexOf("T4HP以上");
@@ -45,7 +50,6 @@ window.onload = () => {
         if (JobType.value.is === "劍士") {
           arr = [...arr, ...HpArrData.is];
           // 頂培、滅龍 最高T5
-          const IsGeneralEquip = ["頂耳", "頂腰", "頂鍊", "滅龍"];
           if (IsGeneralEquip.includes(UseImgItem.value.is.alt)) {
             let idx = arr.indexOf("T6HP以上");
             arr = arr.slice(0, idx);
