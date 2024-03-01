@@ -283,18 +283,25 @@
             />
             <!-- 選取的圖片 -->
             <div
-              class="w-[33px] h-[33px] absolute z-20 -translate-x-1/2 left-[calc(50%-2px)] top-[97px]"
+              class="w-[33px] h-[33px] absolute z-40 -translate-x-1/2 left-[calc(50%-2px)] top-[97px]"
             >
               <img
+                class="absolute top-0 left-0"
+                src="./img/裝備格子.png"
+                alt=""
+              />
+              <img
+                class="relative z-10"
                 v-if="UseImgItem.is.url !== '-'"
                 :src="`./img/${UseImgItem.is.url}.png`"
                 :alt="UseImgItem.is.alt"
               />
             </div>
+
             <div
               class="absolute z-10 -translate-x-1/2 left-1/2 top-[88px] bg-[#FFF] overflow-hidden"
             >
-              <img src="./img/內框格子.png" />
+              <img class="" src="./img/內框格子.png" />
             </div>
             <!-- 切換動畫圖 -->
             <div
@@ -304,7 +311,7 @@
             </div>
             <!-- 動畫光 -->
             <div
-              class="w-[180px] absolute left-1/2 -translate-x-1/2 top-[60px] h-[88px] bg-white transition-opacity ease-in"
+              class="w-[180px] absolute left-1/2 -translate-x-1/2 top-[60px] h-[88px] bg-white transition-opacity ease-in z-30"
               :style="[{ 'opacity': SparkAnimateBool ? 0.5 : 0 }]"
             ></div>
             <!-- 潛能顯示 -->
