@@ -535,7 +535,7 @@ window.onload = () => {
         }, 100);
       };
       const ChangeAimBool = computed(() => {
-        if (!SparkAimBool.value && SparkCount.value >= 30000) return true;
+        if (!SparkAimBool.value && SparkCount.value !== 0) return true;
         return false;
       });
       const ResetSparkSys = () => {

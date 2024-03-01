@@ -260,6 +260,13 @@
               </div>
             </div>
           </label>
+          <button
+            class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold absolute top-[calc(100%+10px)] hidden md:block"
+            @click="ResetSparkSys"
+            v-show="ChangeAimBool"
+          >
+            重設目標
+          </button>
         </div>
       </div>
       <div class="mt-[20rem] md:mt-[2rem] md:ml-20 ml-28 pb-[4.5rem] relative">
@@ -348,7 +355,7 @@
             <input type="checkbox" v-model="hasSparkAnimate" />
             <span class="text-white text-sm ml-2">動畫效果</span>
             <button
-              class="text-white w-[100px] md:scale-100 scale-[0.8] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold absolute right-8 -top-2 md:right-0"
+              class="text-white w-[100px] scale-[0.8] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold absolute right-8 -top-2 md:hidden"
               @click="ResetSparkSys"
               v-show="ChangeAimBool"
             >
@@ -359,7 +366,7 @@
 
         <div
           v-show="SparkCount !== 0"
-          class="text-white max-w-[400px] mx-auto font-bold md:mt-[9rem] mt-12 text-sm md:text-base -translate-x-8"
+          class="text-white max-w-[400px] mx-auto font-bold md:mt-[9rem] mt-16 text-sm md:text-base -translate-x-8"
         >
           <span class="inline-block pr-2">結果: </span>
           <span class="text-sm md:ml-8 inline-block">{{SparkCountRender}}</span>
