@@ -283,13 +283,18 @@
             />
             <!-- 選取的圖片 -->
             <div
-              class="w-[35px] h-[35px] absolute z-10 -translate-x-1/2 left-1/2 top-[94px] bg-[#FFF]"
+              class="w-[33px] h-[33px] absolute z-20 -translate-x-1/2 left-[calc(50%-2px)] top-[97px]"
             >
               <img
                 v-if="UseImgItem.is.url !== '-'"
                 :src="`./img/${UseImgItem.is.url}.png`"
                 :alt="UseImgItem.is.alt"
               />
+            </div>
+            <div
+              class="absolute z-10 -translate-x-1/2 left-1/2 top-[88px] bg-[#FFF] overflow-hidden"
+            >
+              <img src="./img/內框格子.png" />
             </div>
             <!-- 切換動畫圖 -->
             <div
