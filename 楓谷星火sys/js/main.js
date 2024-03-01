@@ -4,6 +4,9 @@ window.onload = () => {
   const App = {
     setup() {
       // 篩選 裝備、星火、職業、目標資料
+      const HpArrData = reactive({
+        is: ["T4HP以上", "T5HP以上", "T6HP以上", "T7HP"],
+      });
       const EquipTypeData = reactive({ data: [] });
       const weaponTypeData = reactive({ data: [] });
       const SparkTypeData = computed(() => {
@@ -28,6 +31,28 @@ window.onload = () => {
         handJobType(null, JobType.value.is);
         return result[0].jobArr;
       });
+      const handHpArrData = (arr) => {
+        if (arr.includes("T4HP以上") && JobType.value.is === "劍士") return arr;
+        if (arr.includes("T4HP以上") && JobType.value.is !== "劍士") {
+          let idx = arr.indexOf("T4HP以上");
+          arr = arr.slice(0, idx);
+          return arr;
+        }
+        let orginArr = [...arr];
+        if (EquipType.value.is === "創世") return orginArr;
+        if (JobType.value.is !== "劍士") return orginArr;
+        // 新增HP目標
+        if (JobType.value.is === "劍士") {
+          arr = [...arr, ...HpArrData.is];
+          // 頂培、滅龍 最高T5
+          const IsGeneralEquip = ["頂耳", "頂腰", "頂鍊", "滅龍"];
+          if (IsGeneralEquip.includes(UseImgItem.value.is.alt)) {
+            let idx = arr.indexOf("T6HP以上");
+            arr = arr.slice(0, idx);
+          }
+          return arr;
+        }
+      };
       const AimTypeData = computed(() => {
         let Usedata = EquipTypeData.data ?? [];
         let SingleFilter = ["請選擇裝備類型", "創世", "頂培", "滅龍"];
@@ -45,6 +70,7 @@ window.onload = () => {
         handImgItem(null, UseImgItem.value.is, dataFilter[0].defaultData.Img);
         if (SingleFilter.includes(EquipType.value.is)) {
           handAimType(null, AimType.value.is, dataFilter[0].defaultData.aim);
+          dataFilter[0].aimArr = handHpArrData(dataFilter[0].aimArr);
           return dataFilter[0].aimArr;
         } else {
           // 二次篩選目標內容
@@ -66,7 +92,7 @@ window.onload = () => {
           // console.log("二次篩選", result);
           // console.log("二次篩選預設值", result[0].default);
           handAimType(null, AimType.value.is, result[0].default);
-
+          result[0].aim = handHpArrData(result[0].aim);
           return result[0].aim;
         }
       });
@@ -90,7 +116,8 @@ window.onload = () => {
           atk: [20, 40, 59, 87, 119, 157, 201],
         },
       });
-      const WeaponTypeHint = ref({ key: "T3", val: "123攻" });
+      const WeaponTypeHint = ref({ key: "T3", val: "123" });
+      const HPTypeHint = ref({ key: "T4", val: 207, show: false });
       const UseSparkFrame = computed(() => {
         let key = SparkType.value.is;
         // console.log(key);
@@ -135,6 +162,7 @@ window.onload = () => {
       };
 
       const handAimType = (el = null, key, defaultKey) => {
+        HPTypeHint.value.show = false;
         if (key !== undefined) {
           AimType.value.is = key;
           // 創世武器切換目標時 ， 更新提示詞
@@ -160,6 +188,45 @@ window.onload = () => {
             if (key === "T7攻") {
               WeaponTypeHint.value.key = "T7";
               WeaponTypeHint.value.val = weaponType.value.is.atk[6];
+            }
+          }
+          // 目標為HP時  顯示HP提示詞
+          if (EquipType.value.is !== "創世" && JobType.value.is === "劍士") {
+            if (key === "T4HP以上") {
+              HPTypeHint.value.show = true;
+              HPTypeHint.value.key = "T4";
+              SparkPlusRule.data.forEach((item) => {
+                if (item.key === UseImgItem.value.is.Lv) {
+                  HPTypeHint.value.val = item.plusRule.pp * 4;
+                }
+              });
+            }
+            if (key === "T5HP以上") {
+              HPTypeHint.value.show = true;
+              HPTypeHint.value.key = "T5";
+              SparkPlusRule.data.forEach((item) => {
+                if (item.key === UseImgItem.value.is.Lv) {
+                  HPTypeHint.value.val = item.plusRule.pp * 5;
+                }
+              });
+            }
+            if (key === "T6HP以上") {
+              HPTypeHint.value.show = true;
+              HPTypeHint.value.key = "T6";
+              SparkPlusRule.data.forEach((item) => {
+                if (item.key === UseImgItem.value.is.Lv) {
+                  HPTypeHint.value.val = item.plusRule.pp * 6;
+                }
+              });
+            }
+            if (key === "T7HP") {
+              HPTypeHint.value.show = true;
+              HPTypeHint.value.key = "T7";
+              SparkPlusRule.data.forEach((item) => {
+                if (item.key === UseImgItem.value.is.Lv) {
+                  HPTypeHint.value.val = item.plusRule.pp * 7;
+                }
+              });
             }
           }
         } else {
@@ -375,6 +442,9 @@ window.onload = () => {
           ) {
             SparkGoal.value.is = WeaponTypeHint.value.val;
           }
+        } else if (HpArrData.is.includes(AimType.value.is)) {
+          SparkGoal.value.key = "hp";
+          SparkGoal.value.is = HPTypeHint.value.val;
         } else {
           if (AimType.value.is === "32主屬以上") SparkGoal.value.is = 32;
           if (AimType.value.is === "37主屬以上") SparkGoal.value.is = 37;
@@ -427,7 +497,13 @@ window.onload = () => {
             "T7攻",
           ];
           if (disableArr.includes(AimType.value.is)) i++;
+          if (HpArrData.is.includes(AimType.value.is)) i++;
         }
+        if (
+          JobType.value.is !== "劍士" &&
+          HpArrData.is.includes(AimType.value.is)
+        )
+          i++;
         i > 0 ? (checkAlertBool.value = true) : (checkAlertBool.value = false);
       };
       const checkAlertBool = ref(false);
@@ -700,6 +776,8 @@ window.onload = () => {
           AtkVal += AllVal * AllSTATtoATK.value;
           aim.val = AtkVal;
           // console.log("這次的計算攻擊量:", aim.val);
+        } else if (aim.key === "hp") {
+          aim.val = attrdata[5].val;
         } else {
           let MainVal = 0;
           let AllVal = attrdata[14].val;
@@ -781,6 +859,7 @@ window.onload = () => {
         IsTwoSubStats,
         // 目標提示詞
         WeaponTypeHint,
+        HPTypeHint,
         // 裝備圖
         UseImgItem,
         EquipImgRender,

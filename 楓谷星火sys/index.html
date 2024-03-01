@@ -163,6 +163,13 @@
                 >{{WeaponTypeHint.key}}攻 = {{WeaponTypeHint.val}}攻</span
               ></span
             >
+            <span
+              class="text-white absolute top-[calc(100%)] left-1/4 -translate-x-1/4 w-[150px]"
+              v-show="HPTypeHint.show"
+              >hint:<span class="ml-4 text-sm text-[#FF0]"
+                >{{HPTypeHint.key}} = {{HPTypeHint.val}}HP</span
+              ></span
+            >
           </label>
           <label
             class="w-full min-w-[150px] relative mt-6 md:text-left mx-auto"
