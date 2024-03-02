@@ -410,10 +410,10 @@ window.onload = () => {
           return false;
         } else {
           if (SparkAimBool.value) {
-            return `已用了 ${SparkCount.value}科 ${SparkType.value.is} 洗到了 ^_^`;
+            return `已用了 ${SparkCount.value}顆 ${SparkType.value.is} 洗到了 ^_^`;
           }
           if (!SparkAimBool.value) {
-            return `已用了 ${SparkCount.value}科 ${SparkType.value.is} 水溝了 T_T`;
+            return `已用了 ${SparkCount.value}顆 ${SparkType.value.is} 水溝了 T_T`;
           }
         }
       });
