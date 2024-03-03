@@ -82,7 +82,11 @@
               :src="`./img/${list.url}.png`"
               alt=""
             />
-            <span class="text-sm font-bold pt-2">{{list.alt}}</span>
+            <span
+              class="text-sm font-bold pt-2"
+              :style="UseImgItem.is.alt ===list.alt ? 'color:#ff0' :'color:#000'  "
+              >{{list.alt}}</span
+            >
           </li>
         </ul>
       </nav>
