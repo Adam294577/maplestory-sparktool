@@ -400,7 +400,7 @@
           <!-- 提示詞 -->
           <div
             v-show="SparkCount !== 0"
-            class="text-white max-w-[400px] mx-auto font-bold text-sm md:text-base -translate-x-8 absolute top-[calc(100%+3rem)]"
+            class="text-white max-w-[400px] mx-auto font-bold text-sm md:text-base -translate-x-4 absolute top-[calc(100%+3rem)]"
           >
             <span class="inline-block pr-2">結果: </span>
             <span class="text-sm md:ml-8 inline-block"
@@ -409,7 +409,7 @@
           </div>
           <div
             v-show="checkAlert !== ''"
-            class="text-white max-w-[400px] mx-auto font-bold text-sm md:text-base -translate-x-8 absolute top-[calc(100%+3rem)]"
+            class="text-white max-w-[400px] mx-auto font-bold text-sm md:text-base -translate-x-4 absolute top-[calc(100%+3rem)]"
           >
             <span class="inline-block">錯誤<span class="px-2">:</span> </span>
             <span class="text-sm inline-block">{{checkAlert}}</span>
@@ -420,13 +420,13 @@
           class="w-full max-w-[800px] mx-auto absolute md:left-1/2 left-[calc(50%-2rem)] -translate-x-1/2 md:top-[calc(100%+12rem)] top-[calc(100%+2.5rem)] pb-16"
           v-show="!ChartfirstCreate"
         >
-          <span class="text-white"
+          <span class="text-white font-bold"
             ><span class="block">期望值:</span>約<span class="text-[#FF0]"
               >{{ChartAvg}}顆</span
             >
             {{SparkType.is}}</span
           >
-          <div class="min-h-[400px]">
+          <div class="md:min-h-[400px]">
             <canvas width="200" height="100" class="" ref="myChart"></canvas>
           </div>
         </div>
