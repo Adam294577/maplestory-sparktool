@@ -278,9 +278,15 @@
           >
             重設目標
           </button>
+          <button
+            class="text-white w-[100px] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold absolute top-[calc(100%+65px)] hidden md:block"
+            @click="handChartData"
+          >
+            查看期望值
+          </button>
         </div>
       </div>
-      <div class="mt-[20rem] md:mt-[2rem] md:ml-20 ml-28 pb-[4.5rem] relative">
+      <div class="mt-[20rem] md:mt-[2rem] md:ml-20 ml-28 pb-[0rem] relative">
         <!-- 運行區塊 -->
         <div
           class="select-none mt-4 min-h-[400px] mx-auto p-4 w-[40%] max-w-[800px] min-w-[270px] relative xl:-left-7 -left-10 md:left-10 rounded-md bg-[#ffcc99] origin-top md:scale-125 scale-100"
@@ -378,31 +384,47 @@
             <input type="checkbox" v-model="hasSparkAnimate" />
             <span class="text-white text-sm ml-2">動畫效果</span>
             <button
-              class="text-white w-[100px] scale-[0.8] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold absolute right-8 -top-2 md:hidden"
+              class="text-white w-[100px] scale-[0.8] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold absolute right-24 -top-2 md:hidden"
               @click="ResetSparkSys"
               v-show="ChangeAimBool"
             >
               重設目標
             </button>
+            <button
+              class="text-white w-[100px] scale-[0.8] text-center bg-black rounded-md py-2 hover:text-[#FF0] font-bold absolute right-0 -top-2 md:hidden"
+              @click="handChartData"
+            >
+              查看期望值
+            </button>
+          </div>
+          <!-- 提示詞 -->
+          <div
+            v-show="SparkCount !== 0"
+            class="text-white max-w-[400px] mx-auto font-bold text-sm md:text-base -translate-x-8 absolute top-[calc(100%+3rem)]"
+          >
+            <span class="inline-block pr-2">結果: </span>
+            <span class="text-sm md:ml-8 inline-block"
+              >{{SparkCountRender}}</span
+            >
+          </div>
+          <div
+            v-show="checkAlert !== ''"
+            class="text-white max-w-[400px] mx-auto font-bold text-sm md:text-base -translate-x-8 absolute top-[calc(100%+3rem)]"
+          >
+            <span class="inline-block">錯誤<span class="px-2">:</span> </span>
+            <span class="text-sm inline-block">{{checkAlert}}</span>
           </div>
         </div>
-
-        <div
-          v-show="SparkCount !== 0"
-          class="text-white max-w-[400px] mx-auto font-bold md:mt-[9rem] mt-16 text-sm md:text-base -translate-x-8"
-        >
-          <span class="inline-block pr-2">結果: </span>
-          <span class="text-sm md:ml-8 inline-block">{{SparkCountRender}}</span>
+        <!-- 圖表 -->
+        <div class="w-full max-w-[800px] mx-auto absolute md:left-1/2 left-[calc(50%-2rem)] -translate-x-1/2 md:top-[calc(100%+12rem)] top-[calc(100%+7rem)] pb-16" v-show="!ChartfirstCreate">
+          <span class="text-white">期望值: 大約 <span class="text-[#FF0]">{{ChartAvg}}顆</span> {{SparkType.is}} 洗好</span>
+          <div
+            class="min-h-[400px]"
+          >
+            <canvas width="200" height="100" class="" ref="myChart"></canvas>
+          </div>
         </div>
-        <div
-          v-show="checkAlert !== ''"
-          class="text-white max-w-[400px] mx-auto font-bold md:mt-[9rem] mt-12 text-sm md:text-base -translate-x-8"
-        >
-          <span class="inline-block pr-2">錯誤: </span>
-          <span class="text-sm md:ml-8 inline-block">{{checkAlert}}</span>
         </div>
-      </div>
-
       <footer
         class="flex fixed bottom-0 w-full justify-between text-white bg-black md:px-8 text-xs md:text-base px-1"
       >
@@ -424,6 +446,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/3.36.0/minified.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="./js/vue.js"></script>
     <script src="./js/main.js"></script>
   </body>

@@ -1,11 +1,11 @@
 window.onload = () => {
-  const { createApp, ref, reactive, computed, watch, onMounted, onUpdated } =
+  const { createApp, ref, reactive, computed, watch, onMounted, onUpdated ,onBeforeUnmount} =
     Vue;
   const App = {
     setup() {
       // 篩選 裝備、星火、職業、目標資料
       const HpArrData = reactive({
-        is: ["T4HP以上", "T5HP以上", "T6HP以上", "T7HP"],
+        is: ["T3HP以上","T4HP以上", "T5HP以上", "T6HP以上", "T7HP"],
       });
       const EquipTypeData = reactive({ data: [] });
       const weaponTypeData = reactive({ data: [] });
@@ -38,9 +38,9 @@ window.onload = () => {
           let idx = arr.indexOf("T6HP以上");
           if (idx !== -1) arr = arr.slice(0, idx);
         }
-        if (arr.includes("T4HP以上") && JobType.value.is === "劍士") return arr;
-        if (arr.includes("T4HP以上") && JobType.value.is !== "劍士") {
-          let idx = arr.indexOf("T4HP以上");
+        if (arr.includes("T3HP以上") && JobType.value.is === "劍士") return arr;
+        if (arr.includes("T3HP以上") && JobType.value.is !== "劍士") {
+          let idx = arr.indexOf("T3HP以上");
           if (idx !== -1) arr = arr.slice(0, idx);
           return arr;
         }
@@ -198,6 +198,15 @@ window.onload = () => {
           }
           // 目標為HP時  顯示HP提示詞
           if (EquipType.value.is !== "創世" && JobType.value.is === "劍士") {
+            if (key === "T3HP以上") {
+              HPTypeHint.value.show = true;
+              HPTypeHint.value.key = "T3";
+              SparkPlusRule.data.forEach((item) => {
+                if (item.key === UseImgItem.value.is.Lv) {
+                  HPTypeHint.value.val = item.plusRule.pp * 3;
+                }
+              });
+            }
             if (key === "T4HP以上") {
               HPTypeHint.value.show = true;
               HPTypeHint.value.key = "T4";
@@ -540,7 +549,7 @@ window.onload = () => {
         // console.log(SparkResult.value.is);
         CalculateSparkVal();
         setTimeout(() => {
-          window.scrollTo({ top: 9999 });
+          // window.scrollTo({ top: 9999 });
         }, 1);
       };
       const SparkAnimateBool = ref(false);
@@ -550,7 +559,7 @@ window.onload = () => {
           EquipType.value.is === "頂培" &&
           AimType.value.is === "48主屬以上"
         )
-          return "點30000次";
+          return "點10000次";
         if (SparkType.value.is === "覺醒的輪迴星火") return "點到有";
         if (SparkType.value.is !== "覺醒的輪迴星火") {
           let arr = [
@@ -559,10 +568,15 @@ window.onload = () => {
             "57+3%主屬以上",
             "78+3%主屬以上",
             "42+3%主屬以上",
+            "6B+T3攻+T3有用",
           ];
           if (arr.includes(AimType.value.is)) {
-            return "點30000次";
-          } else {
+            return "點10000次";
+          } else if(EquipType.value.is ==="頂培"){
+            if(AimType.value.is === "48主屬以上") return "點10000次"
+            return "點到有"
+          }
+          else{
             return "點到有";
           }
         }
@@ -576,6 +590,9 @@ window.onload = () => {
         // 先清空字串內容 確保動畫流暢
         SparkResultRender.value = [];
         DiceSparkOnce();
+        if(SparkAimBool.value){
+          updateResultPos()
+        }
         if (!hasSparkAnimate.value) {
           SparkSysBool.value = false;
           return;
@@ -594,27 +611,36 @@ window.onload = () => {
         if (checkAlert.value !== "") return alert("選單設定有誤 請確認");
         if (SparkSysBool.value) return console.log("執行中 點了無效");
         SparkSysBool.value = true;
-        const MaxTry = 30000;
+        const MaxTry = 10000;
         let i = 0;
-        setTimeout(() => {
-          while (i < MaxTry) {
-            i++;
-            DiceSparkOnce();
-            // console.log(i);
-            if (SparkAimBool.value) {
-              console.log("測試目標");
-              SparkSysBool.value = false;
-              return;
+        while (i < MaxTry) {
+          i++;
+          DiceSparkOnce();
+          // console.log(i);
+          if (SparkAimBool.value) {
+            SparkSysBool.value = false;
+            // 若已繪製過圖 更新結果區間位置
+           
+            if(!ChartfirstCreate.value){
+              updateResultPos()
             }
-            if (i === MaxTry) {
-              console.log("太難洗了");
-              console.log("要加的次數", i);
-              console.log("總計次數", SparkCount.value);
-              SparkSysBool.value = false;
-              return;
+            // 若有要繪製圖表 做存取動作
+            if (UseChartBool.value) {
+              ChartData.value.push(i);
             }
+  
+
+
+            return;
           }
-        }, 100);
+          if (i === MaxTry) {
+            console.log("太難洗了");
+            console.log("要加的次數", i);
+            console.log("總計次數", SparkCount.value);
+            SparkSysBool.value = false;
+            return;
+          }
+        }
       };
       const ChangeAimBool = computed(() => {
         if (!SparkAimBool.value && SparkCount.value !== 0) return true;
@@ -622,8 +648,8 @@ window.onload = () => {
       });
       const ResetSparkSys = () => {
         SparkAimBool.value = false;
-        SparkCount.value = 0;
         SparkResultRender.value = [];
+        SparkCount.value = 0;
         window.scrollTo({ top: 0 });
       };
       const SparkResultRender = ref([]);
@@ -814,10 +840,246 @@ window.onload = () => {
         }
 
         if (aim.val >= SparkGoal.value.is) {
-          console.log("顯示結果", SparkResultRender.value);
-          console.log("目標達成");
+          // console.log("顯示結果", SparkResultRender.value);
+          // console.log("目標達成");
           SparkAimBool.value = true;
         }
+      };
+
+      // 圖表繪製
+      const UseChartBool = ref(true);
+      const myChart = ref(null);
+      const ChartData = ref([]);
+      const SuccessData = ref({ is: [] });
+      const linesLabel = ref([]);
+      const ChartfirstCreate = ref(true)
+      const ChartAvg = ref(null)
+      const bubbleShow = ref(0)
+      const handChartData = () => {
+        checkSparkList();
+        if (checkAlert.value !== "") return alert("選單設定有誤 請確認");
+        if(SparkSuccessBtn.value === "點10000次") return alert("超過10000次 不提供圖表");
+        UseChartBool.value = true;
+        ChartData.value = [];
+
+        // 執行200次 並將資料存取
+        for (let i = 1; i <= 200; i++) {
+          DiceSparkToSuccess();
+          SparkCount.value = 0;
+        }
+        let sortArr = ChartData.value.slice().sort((a, b) => a - b);
+        const getsort_3_Num = sortArr[Math.floor(sortArr.length * 0.03)];
+        const getsort_10_Num = sortArr[Math.floor(sortArr.length * 0.1)];
+        const getsort_35_Num = sortArr[Math.floor(sortArr.length * 0.35)];
+        const getsort_50_Num = sortArr[Math.floor(sortArr.length * 0.5)];
+        const getsort_65_Num = sortArr[Math.floor(sortArr.length * 0.65)];
+        const getsort_90_Num = sortArr[Math.floor(sortArr.length * 0.9)];
+        const getsort_97_Num = sortArr[Math.floor(sortArr.length * 0.97)];
+        let group1 = 0;
+        let group2 = 0;
+        let group3 = 0;
+        let group4 = 0;
+        let group5 = 0;
+        let group6 = 0;
+        let group7 = 0;
+        sortArr.forEach((item) => {
+          if (item <= getsort_3_Num) {
+            group1++;
+          }
+          if (item > getsort_3_Num && item <= getsort_10_Num) {
+            group2++;
+          }
+          if (item > getsort_10_Num && item <= getsort_35_Num) {
+            group3++;
+          }
+          if (item > getsort_35_Num && item <= getsort_65_Num) {
+            group4++;
+          }
+          if (item > getsort_65_Num && item <= getsort_90_Num) {
+            group5++;
+          }
+          if (item > getsort_90_Num && item <= getsort_97_Num) {
+            group6++;
+          }
+          if (item > getsort_97_Num) {
+            group7++;
+          }
+        });
+
+        ChartAvg.value = getsort_50_Num
+
+        // 抓取前3%、10%、30%、50%、70%、90%、97%的值 作為圖表文字
+        let nullArr = []
+        linesLabel.value = nullArr.slice();
+        linesLabel.value.push({val:getsort_3_Num,msg:`${getsort_3_Num}顆以下`});
+        linesLabel.value.push({val:getsort_10_Num,msg:`${getsort_3_Num}~${getsort_10_Num}顆`});
+        linesLabel.value.push({val:getsort_35_Num,msg:`${getsort_10_Num}~${getsort_35_Num}顆`});
+        linesLabel.value.push({val:getsort_50_Num,msg:`${getsort_35_Num}~${getsort_65_Num}顆`});
+        linesLabel.value.push({val:getsort_65_Num,msg:`${getsort_65_Num}~${getsort_90_Num}顆`});
+        linesLabel.value.push({val:getsort_90_Num,msg:`${getsort_90_Num}~${getsort_97_Num}顆`});
+        linesLabel.value.push({val:getsort_97_Num,msg:`${getsort_97_Num}顆以上`});
+        console.log("圖表文字", linesLabel.value);
+        // 將所有資料分7組丟進去
+        SuccessData.value.is = nullArr.slice();
+        SuccessData.value.is.push(group1);
+        SuccessData.value.is.push(group2);
+        SuccessData.value.is.push(group3);
+        SuccessData.value.is.push(group4);
+        SuccessData.value.is.push(group5);
+        SuccessData.value.is.push(group6);
+        SuccessData.value.is.push(group7);
+        // console.log("圖表資料", SuccessData.value.is);
+
+        // 繪製
+        UseChartBool.value = false;
+        CreateChart();
+        ResetSparkSys()
+      };
+      const destroyChart = (canvas)  =>{
+        // 销毁图表实例
+        if(ChartfirstCreate.value){
+          // console.log('第一次不銷毀');
+          ChartfirstCreate.value = false
+          return          
+        }
+        if (!ChartfirstCreate.value) {
+          // console.log('銷毀圖表');
+          canvas.destroy();
+          canvas = null;
+          return
+        }
+      }
+      const ChartResultPos = ref({x:0,y:0})
+      const updateResultPos = () =>{
+        if(SparkAimBool.value){
+          // 先得知結果落在哪個點
+          let count  = SparkCount.value
+          console.log("該次數量:",count);
+          if (count <= linesLabel.value[0].val) {
+            ChartResultPos.value.x = linesLabel.value[0].msg
+            ChartResultPos.value.y = SuccessData.value.is[0]
+          }
+          if (count > linesLabel.value[0].val && count <= linesLabel.value[1].val) {
+            ChartResultPos.value.x = linesLabel.value[1].msg
+            ChartResultPos.value.y = SuccessData.value.is[1]
+          }
+          if (count > linesLabel.value[1].val && count <= linesLabel.value[2].val) {
+            ChartResultPos.value.x = linesLabel.value[2].msg
+            ChartResultPos.value.y = SuccessData.value.is[2]
+          }
+          if (count > linesLabel.value[2].val && count <= linesLabel.value[3].val) {
+            ChartResultPos.value.x = linesLabel.value[3].msg
+            ChartResultPos.value.y = SuccessData.value.is[3]
+    
+          }
+          if (count > linesLabel.value[4].val && count <= linesLabel.value[5].val) {
+            ChartResultPos.value.x = linesLabel.value[4].msg
+            ChartResultPos.value.y = SuccessData.value.is[4]
+
+          }
+          if (count > linesLabel.value[5].val && count <= linesLabel.value[6].val) {
+            ChartResultPos.value.x = linesLabel.value[5].msg
+            ChartResultPos.value.y = SuccessData.value.is[5]
+
+          }
+          if (count > linesLabel.value[6].val) {
+            ChartResultPos.value.x = linesLabel.value[6].msg
+            ChartResultPos.value.y = SuccessData.value.is[6]
+
+          }
+          console.log("resultPos:繪製圖表");
+          CreateChart();
+        }
+       
+      }
+      let myLineChart = null
+      const CreateChart = () => {
+        Chart.defaults.borderColor = "#999";
+        Chart.defaults.color = "#FFF";
+        let labelName = ""
+        if(EquipType.value.is ==="創世"){ 
+          labelName = `創世-${AimType.value.is} 分布區間`
+        }else{
+          labelName = `${UseImgItem.value.is.alt}-${AimType.value.is} 分布區間`
+        }
+        
+        let labelsMsg = []
+        linesLabel.value.forEach(item=>{
+          labelsMsg.push(item.msg)
+        })
+        // console.log('X軸',labelsMsg);
+        // console.log(ChartResultPos.value);
+        bubbleShow.value = 7
+        if(SparkCount.value === 0){
+          bubbleShow.value = 0
+          ChartResultPos.value.x =  null
+          ChartResultPos.value.y =  null
+        }
+        const LineData = {
+          labels: labelsMsg,
+          datasets: [
+            {
+              label: labelName,
+              type: "line",
+              data: SuccessData.value.is,
+              fill: false,
+              borderColor: "#EEE",
+              backgroundColor: "#EEE",
+              borderWidth: 2,
+              tension: 0.4,
+              order: 1
+            },
+            {
+              type:"bubble",
+              datasets:[
+                {
+                  order: 2
+                }
+              ],
+              data:[
+                {
+                  x: ChartResultPos.value.x, 
+                  y: ChartResultPos.value.y, 
+                  r: bubbleShow.value,
+                }
+              ],
+              borderColor: "#FF0",
+              backgroundColor: "#FF0",              
+              label: '結果',
+            }            
+          ],
+        };
+        const LineOptions = {
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              grid: {
+                display: true,
+                color: "#999",
+              },
+            },
+            x: {
+              grid: {
+                display: false,
+              },
+            },
+          },
+          layout: {
+            padding: {top:10},
+          },
+          color: "#FFF",
+          plugins: {},
+        };
+        destroyChart(myLineChart)
+        myLineChart = new Chart(myChart.value, {
+          data: LineData,
+          options: LineOptions,
+        }
+        );
+       setTimeout(()=>{
+        window.scrollTo({top:9999})
+       },1)
+        
       };
       onMounted(() => {
         const api = axios.create({
@@ -849,6 +1111,7 @@ window.onload = () => {
         };
         init();
       });
+    
       return {
         // 篩選 裝備、星火、職業、目標資料
         SparkTypeData,
@@ -892,6 +1155,12 @@ window.onload = () => {
         checkAlert,
         ResetSparkSys,
         ChangeAimBool,
+        // 圖表
+        myChart,
+        handChartData,
+        ChartAvg,
+        ChartData,
+        ChartfirstCreate
       };
     },
   };
